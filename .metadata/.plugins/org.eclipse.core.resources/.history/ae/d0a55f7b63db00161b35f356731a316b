@@ -1,0 +1,157 @@
+# FIXED
+
+SimpleLinkFunctions.obj: ../SimpleLinkFunctions.c
+SimpleLinkFunctions.obj: ../includes.h
+SimpleLinkFunctions.obj: ../parameters.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/string.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/linkage.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdlib.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdio.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdarg.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdint.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdbool.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/math.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/_defs.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/simplelink.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../user.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/string.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../cc_pal.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink_extlib/provisioninglib/provisioning_api.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/simplelink.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../source/objInclusion.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/trace.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/fs.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/socket.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/netapp.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/wlan.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/device.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/netcfg.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/wlan_rx_filters.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../source/nonos.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ff.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/integer.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ffconf.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_ints.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_types.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_gpio.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_memmap.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_common_reg.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_apps_rcm.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/rom.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/pin.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/rom_map.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/rom_patch.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/prcm.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/sdhost.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/utils.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/interrupt.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/gpio.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/spi.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/i2c.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/uart.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/uart_if.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/gpio_if.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/i2c_if.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/common.h
+SimpleLinkFunctions.obj: ../pinmux.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/httpcli.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/httpstd.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/network.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/ssock.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/common.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdio.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/string.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdlib.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/assert.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdarg.h
+SimpleLinkFunctions.obj: C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/json/jsmn.h
+SimpleLinkFunctions.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stddef.h
+SimpleLinkFunctions.obj: ../SimpleLinkFunctions.h
+SimpleLinkFunctions.obj: ../NetworkFunctions.h
+SimpleLinkFunctions.obj: ../HMC5883.h
+SimpleLinkFunctions.obj: ../ADXL345.h
+SimpleLinkFunctions.obj: ../IMU.h
+SimpleLinkFunctions.obj: ../NMEA.h
+SimpleLinkFunctions.obj: ../DS2401.h
+SimpleLinkFunctions.obj: ../MPL115A2.h
+SimpleLinkFunctions.obj: ../SD_card.h
+SimpleLinkFunctions.obj: ../GPS.h
+SimpleLinkFunctions.obj: ../main.h
+
+../SimpleLinkFunctions.c: 
+../includes.h: 
+../parameters.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/string.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/linkage.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdlib.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdio.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdarg.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdint.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdbool.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/math.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/_defs.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/simplelink.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../user.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/string.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../cc_pal.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink_extlib/provisioninglib/provisioning_api.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/simplelink.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../source/objInclusion.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/trace.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/fs.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/socket.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/netapp.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/wlan.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/device.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/netcfg.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/wlan_rx_filters.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/simplelink/include/../source/nonos.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ff.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/integer.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ffconf.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_ints.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_types.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_gpio.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_memmap.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_common_reg.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/inc/hw_apps_rcm.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/rom.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/pin.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/rom_map.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/rom_patch.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/prcm.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/sdhost.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/utils.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/interrupt.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/gpio.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/spi.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/i2c.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/driverlib/uart.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/uart_if.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/gpio_if.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/i2c_if.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/example/common/common.h: 
+../pinmux.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/httpcli.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/httpstd.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/network.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/ssock.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/http/client/common.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdio.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/string.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdlib.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/assert.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdarg.h: 
+C:/ti/CC3200SDK_1.2.0/cc3200-sdk/netapps/json/jsmn.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stddef.h: 
+../SimpleLinkFunctions.h: 
+../NetworkFunctions.h: 
+../HMC5883.h: 
+../ADXL345.h: 
+../IMU.h: 
+../NMEA.h: 
+../DS2401.h: 
+../MPL115A2.h: 
+../SD_card.h: 
+../GPS.h: 
+../main.h: 

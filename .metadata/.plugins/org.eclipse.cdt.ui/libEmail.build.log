@@ -1,0 +1,23 @@
+
+**** Build of configuration Release for project libEmail ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: D:/workspace/netapps/smtp/client/base64.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink" --include_path="D:/workspace/simplelink/include" --include_path="D:/workspace/simplelink/source" --include_path="D:/workspace/simplelink_extlib/provisioninglib" -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="base64.d"  "D:/workspace/netapps/smtp/client/base64.c"
+'Finished building: D:/workspace/netapps/smtp/client/base64.c'
+' '
+'Building file: D:/workspace/netapps/smtp/client/email.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink" --include_path="D:/workspace/simplelink/include" --include_path="D:/workspace/simplelink/source" --include_path="D:/workspace/simplelink_extlib/provisioninglib" -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="email.d"  "D:/workspace/netapps/smtp/client/email.c"
+'Finished building: D:/workspace/netapps/smtp/client/email.c'
+' '
+'Building target: libEmail.a'
+'Invoking: ARM Archiver'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armar" r "libEmail.a" "./base64.obj" "./email.obj"  
+  ==>  new archive 'libEmail.a'
+  ==>  building archive 'libEmail.a'
+'Finished building target: libEmail.a'
+' '
+
+**** Build Finished ****

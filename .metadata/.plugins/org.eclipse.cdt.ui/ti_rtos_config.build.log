@@ -1,0 +1,7 @@
+
+**** Build of configuration Default for project ti_rtos_config ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+gmake: Nothing to be done for 'all'.
+
+**** Build Finished ****

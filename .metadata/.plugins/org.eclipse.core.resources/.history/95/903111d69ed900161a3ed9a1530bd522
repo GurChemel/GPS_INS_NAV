@@ -1,0 +1,19 @@
+/*
+ * sensors.h
+ *
+ *  Created on: 13 Jan 2017
+ *      Author: Samsung
+ */
+
+#ifndef SENSORS_SENSORS_H_
+#define SENSORS_SENSORS_H_
+
+#include "../includes/std_inc.h"
+#include "../includes/inc.h"
+#include "../includes/ex_common.h"
+#include "../includes/driverlib.h"
+#include "../infrastructure.h"
+
+#include "MPL115A2.h"
+
+#endif /* SENSORS_SENSORS_H_ */

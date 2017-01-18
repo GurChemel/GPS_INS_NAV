@@ -1,0 +1,39 @@
+
+**** Build of configuration Release for project i2c_demo ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/i2c_if.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/inc" -g --define=ccs --define=NON_NETWORK --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="i2c_if.d"  "C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/i2c_if.c"
+'Finished building: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/i2c_if.c'
+' '
+'Building file: ../main.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/inc" -g --define=ccs --define=NON_NETWORK --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="main.d"  "../main.c"
+'Finished building: ../main.c'
+' '
+'Building file: ../pinmux.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/inc" -g --define=ccs --define=NON_NETWORK --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="pinmux.d"  "../pinmux.c"
+'Finished building: ../pinmux.c'
+' '
+'Building file: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/startup_ccs.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/inc" -g --define=ccs --define=NON_NETWORK --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="startup_ccs.d"  "C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/startup_ccs.c"
+'Finished building: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/startup_ccs.c'
+' '
+'Building file: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/uart_if.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib" --include_path="C:/TI/CC3200SDK_1.2.0/cc3200-sdk/inc" -g --define=ccs --define=NON_NETWORK --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="uart_if.d"  "C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/uart_if.c"
+'Finished building: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/uart_if.c'
+' '
+'Building target: i2c_demo.out'
+'Invoking: ARM Linker'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me -g --define=ccs --define=NON_NETWORK --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number -z -m"i2c_demo.map" --heap_size=0x800 --stack_size=0x800 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/ccs/Release" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --display_error_number --diag_wrap=off --warn_sections --xml_link_info="i2c_demo_linkInfo.xml" --rom_model -o "i2c_demo.out" "./i2c_if.obj" "./main.obj" "./pinmux.obj" "./startup_ccs.obj" "./uart_if.obj" "../cc3200v1p32.cmd"  -llibc.a -ldriverlib.a 
+<Linking>
+'Finished building target: i2c_demo.out'
+' '
+"C:/TI/ccsv6/utils/tiobj2bin/tiobj2bin" "i2c_demo.out" "i2c_demo.bin" "C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armofd" "C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex" "C:/TI/ccsv6/utils/tiobj2bin/mkhex4bin"
+' '
+
+**** Build Finished ****

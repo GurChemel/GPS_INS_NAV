@@ -1,0 +1,64 @@
+/*
+ * GPS.c
+ *
+ *  Created on: Aug 4, 2016
+ *      Author: Rafi
+ */
+
+
+#include "sensors.h"
+
+void GPS_on(void)
+{
+	GPIOPinWrite(GPIOA1_BASE, GPIO_PIN_1, 0x00); //Turn on GPS
+}
+
+void GPS_off(void)
+{
+	GPIOPinWrite(GPIOA1_BASE, GPIO_PIN_1, 0xFF); //Turn off GPS
+}
+
+
+build_gps_ubx_message{
+	if (get)
+		switch (msg_name)
+			case CFG_MSG :
+				((MSG_HDR << MSG_HDR_LEN) & msg_class) << MSG_CLASS_LEN) & msg_ID) <<  MSG_ID_LEN) & pay) << pay_len
+			case NAV_MSG :
+
+	else if (set)
+		switch (msg_name)
+			case CFG_MSG :
+			case NAV_MSG :
+}
+
+void build_gps_ubx_msg(char msg_class, char msg_id, int msg_len, char* payload){
+	char ck_a, ck_b;
+					int msg_tot_len	    = MSG_HDR_LEN + MSG_CLASS_LEN + MSG_ID_LEN+ MSG_LEN_IND + pay_len + CKS_LEN;
+					int msg_body_len 	= MSG_CLASS_LEN + MSG_ID_LEN+ MSG_LEN_IND + pay_len
+					char msg_len_low  	= msg_len;
+					char msg_len_high 	= msg_len >> BYTE;
+					char msg_body [msg_body_len] = {msg_class, msg_id, msg_len_low, msg_len_high};
+
+					memcpy ((msg_body+4*sizeof(char)),payload,strlen(payload))
+						msg_body =
+					}
+					void msg_body [msg_body_len] =
+
+					//this is void because the payload has a bigger and different size tha
+					void msg_body [msg_body_len] = {msg_class, msg_id, msg_len_low, msg_len_high, payload};
+					void msg[message_Len] = {SYNC_CHAR1,SYNC_CHAR2,msg_class,msg_id,msg_len_low,msg_len_high,payload,ck_a,ck_b};
+
+					calc_masg_checksum (&ck_a, &ck_b,)
+}
+
+void calc_msg_checksum (int* CK_A, int* CK_B, int msg_body, int msg_bit_len){
+	int I;
+	CK_A = 0, CK_B = 0
+	for(I=0;I<msg_bit_len;I++){
+		CK_A = CK_A + (msg_body & 0x1);
+		CK_B = CK_B + CK_A;
+		msg_body = (msg_body >> 1);
+	}
+}
+

@@ -1,0 +1,30 @@
+/*
+ * sensors.h
+ *
+ *  Created on: 13 Jan 2017
+ *      Author: Samsung
+ */
+
+#ifndef SENSORS_STD_INC_H_
+#define SENSORS_STD_INC_H_
+
+/*#include "ADXL345.h"
+#include "GPS.h"
+#include "HMC5883.h"
+#include "MPL115A2.h*/
+
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <integer.h>
+
+#include "i2c_if.h"
+#include "i2c.h"
+#include "hw_memmap.h"
+#include "hw_i2c.h"
+#include "utils.h"
+
+
+#endif /* SENSORS_STD_INC_H_ */

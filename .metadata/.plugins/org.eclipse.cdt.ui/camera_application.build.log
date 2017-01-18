@@ -1,0 +1,80 @@
+
+**** Build of configuration Release for project camera_application ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: ../camera_app.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/example/common" --include_path="D:/oslib" --include_path="D:/simplelink/" --include_path="D:/simplelink/source/" --include_path="D:/simplelink/include" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=cc3200 --define=SL_PLATFORM_MULTI_THREADED --define=ccs --define=USE_FREERTOS --define=NOTERM --define=QVGA_FRAME --define=ENABLE_JPEG --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="camera_app.d"  "../camera_app.c"
+
+>> Compilation failure
+subdir_rules.mk:7: recipe for target 'camera_app.obj' failed
+"../camera_app.c", line 49: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../camera_app.c".
+Compilation terminated.
+gmake: *** [camera_app.obj] Error 1
+'Building file: ../i2cconfig.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/example/common" --include_path="D:/oslib" --include_path="D:/simplelink/" --include_path="D:/simplelink/source/" --include_path="D:/simplelink/include" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=cc3200 --define=SL_PLATFORM_MULTI_THREADED --define=ccs --define=USE_FREERTOS --define=NOTERM --define=QVGA_FRAME --define=ENABLE_JPEG --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="i2cconfig.d"  "../i2cconfig.c"
+
+>> Compilation failure
+subdir_rules.mk:14: recipe for target 'i2cconfig.obj' failed
+"../i2cconfig.c", line 46: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../i2cconfig.c".
+Compilation terminated.
+gmake: *** [i2cconfig.obj] Error 1
+'Building file: ../main.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/example/common" --include_path="D:/oslib" --include_path="D:/simplelink/" --include_path="D:/simplelink/source/" --include_path="D:/simplelink/include" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=cc3200 --define=SL_PLATFORM_MULTI_THREADED --define=ccs --define=USE_FREERTOS --define=NOTERM --define=QVGA_FRAME --define=ENABLE_JPEG --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="main.d"  "../main.c"
+
+>> Compilation failure
+subdir_rules.mk:21: recipe for target 'main.obj' failed
+"../main.c", line 60: fatal error #1965: cannot open source file "rom.h"
+1 catastrophic error detected in the compilation of "../main.c".
+Compilation terminated.
+gmake: *** [main.obj] Error 1
+'Building file: ../mt9d111.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/example/common" --include_path="D:/oslib" --include_path="D:/simplelink/" --include_path="D:/simplelink/source/" --include_path="D:/simplelink/include" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=cc3200 --define=SL_PLATFORM_MULTI_THREADED --define=ccs --define=USE_FREERTOS --define=NOTERM --define=QVGA_FRAME --define=ENABLE_JPEG --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="mt9d111.d"  "../mt9d111.c"
+
+>> Compilation failure
+subdir_rules.mk:28: recipe for target 'mt9d111.obj' failed
+"../mt9d111.c", line 48: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../mt9d111.c".
+Compilation terminated.
+gmake: *** [mt9d111.obj] Error 1
+'Building file: D:/workspace/common/network_common.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/example/common" --include_path="D:/oslib" --include_path="D:/simplelink/" --include_path="D:/simplelink/source/" --include_path="D:/simplelink/include" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=cc3200 --define=SL_PLATFORM_MULTI_THREADED --define=ccs --define=USE_FREERTOS --define=NOTERM --define=QVGA_FRAME --define=ENABLE_JPEG --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="network_common.d"  "D:/workspace/common/network_common.c"
+
+>> Compilation failure
+subdir_rules.mk:35: recipe for target 'network_common.obj' failed
+"D:/workspace/common/network_common.c", line 42: fatal error #1965: cannot open source file "simplelink.h"
+1 catastrophic error detected in the compilation of "D:/workspace/common/network_common.c".
+Compilation terminated.
+gmake: *** [network_common.obj] Error 1
+'Building file: ../pinmux.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/example/common" --include_path="D:/oslib" --include_path="D:/simplelink/" --include_path="D:/simplelink/source/" --include_path="D:/simplelink/include" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=cc3200 --define=SL_PLATFORM_MULTI_THREADED --define=ccs --define=USE_FREERTOS --define=NOTERM --define=QVGA_FRAME --define=ENABLE_JPEG --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="pinmux.d"  "../pinmux.c"
+
+>> Compilation failure
+subdir_rules.mk:42: recipe for target 'pinmux.obj' failed
+"../pinmux.c", line 46: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../pinmux.c".
+Compilation terminated.
+gmake: *** [pinmux.obj] Error 1
+gmake: *** No rule to make target 'D:/example/common/startup_ccs.c', needed by 'startup_ccs.obj'.
+'Building file: ../startup_ewarm.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/example/common" --include_path="D:/oslib" --include_path="D:/simplelink/" --include_path="D:/simplelink/source/" --include_path="D:/simplelink/include" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=cc3200 --define=SL_PLATFORM_MULTI_THREADED --define=ccs --define=USE_FREERTOS --define=NOTERM --define=QVGA_FRAME --define=ENABLE_JPEG --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="startup_ewarm.d"  "../startup_ewarm.c"
+
+>> Compilation failure
+subdir_rules.mk:56: recipe for target 'startup_ewarm.obj' failed
+"../startup_ewarm.c", line 39: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../startup_ewarm.c".
+Compilation terminated.
+gmake: *** [startup_ewarm.obj] Error 1
+gmake: *** No rule to make target 'D:/example/common/uart_if.c', needed by 'uart_if.obj'.
+gmake: *** No rule to make target 'D:/example/common/udma_if.c', needed by 'udma_if.obj'.
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****

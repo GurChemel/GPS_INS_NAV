@@ -1,0 +1,13 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Each subdirectory must supply rules for building sources it contributes
+interfaces/terninal.obj: ../interfaces/terninal.c $(GEN_OPTS) | $(GEN_HDRS)
+	@echo 'Building file: $<'
+	@echo 'Invoking: ARM Compiler'
+	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/common" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/netapps" --include_path="D:/workspace/netapps/json" --include_path="D:/workspace/simplelink" --include_path="D:/workspace/simplelink/include" --include_path="D:/workspace/simplelink/source" --include_path="D:/workspace/simplelink_extlib/provisioninglib" --include_path="D:/workspace/third_party/fatfs/src" -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi --preproc_with_compile --preproc_dependency="interfaces/terninal.d" --obj_directory="interfaces" $(GEN_OPTS__FLAG) "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+

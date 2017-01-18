@@ -1,0 +1,129 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CMD_SRCS += \
+../cc3200v1p32.cmd 
+
+C_SRCS += \
+../ADXL345.c \
+../DS2401.c \
+../GPS.c \
+../HMC5883.c \
+../IMU.c \
+../MPL115A2.c \
+../NMEA.c \
+../NetworkFunctions.c \
+../SD_card.c \
+../SimpleLinkFunctions.c \
+../diskio.c \
+C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/gpio_if.c \
+C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/i2c_if.c \
+../main.c \
+C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/network_common.c \
+../pinmux2.c \
+C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/startup_ccs.c \
+C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/uart_if.c 
+
+OBJS += \
+./ADXL345.obj \
+./DS2401.obj \
+./GPS.obj \
+./HMC5883.obj \
+./IMU.obj \
+./MPL115A2.obj \
+./NMEA.obj \
+./NetworkFunctions.obj \
+./SD_card.obj \
+./SimpleLinkFunctions.obj \
+./diskio.obj \
+./gpio_if.obj \
+./i2c_if.obj \
+./main.obj \
+./network_common.obj \
+./pinmux2.obj \
+./startup_ccs.obj \
+./uart_if.obj 
+
+C_DEPS += \
+./ADXL345.d \
+./DS2401.d \
+./GPS.d \
+./HMC5883.d \
+./IMU.d \
+./MPL115A2.d \
+./NMEA.d \
+./NetworkFunctions.d \
+./SD_card.d \
+./SimpleLinkFunctions.d \
+./diskio.d \
+./gpio_if.d \
+./i2c_if.d \
+./main.d \
+./network_common.d \
+./pinmux2.d \
+./startup_ccs.d \
+./uart_if.d 
+
+C_DEPS__QUOTED += \
+"ADXL345.d" \
+"DS2401.d" \
+"GPS.d" \
+"HMC5883.d" \
+"IMU.d" \
+"MPL115A2.d" \
+"NMEA.d" \
+"NetworkFunctions.d" \
+"SD_card.d" \
+"SimpleLinkFunctions.d" \
+"diskio.d" \
+"gpio_if.d" \
+"i2c_if.d" \
+"main.d" \
+"network_common.d" \
+"pinmux2.d" \
+"startup_ccs.d" \
+"uart_if.d" 
+
+OBJS__QUOTED += \
+"ADXL345.obj" \
+"DS2401.obj" \
+"GPS.obj" \
+"HMC5883.obj" \
+"IMU.obj" \
+"MPL115A2.obj" \
+"NMEA.obj" \
+"NetworkFunctions.obj" \
+"SD_card.obj" \
+"SimpleLinkFunctions.obj" \
+"diskio.obj" \
+"gpio_if.obj" \
+"i2c_if.obj" \
+"main.obj" \
+"network_common.obj" \
+"pinmux2.obj" \
+"startup_ccs.obj" \
+"uart_if.obj" 
+
+C_SRCS__QUOTED += \
+"../ADXL345.c" \
+"../DS2401.c" \
+"../GPS.c" \
+"../HMC5883.c" \
+"../IMU.c" \
+"../MPL115A2.c" \
+"../NMEA.c" \
+"../NetworkFunctions.c" \
+"../SD_card.c" \
+"../SimpleLinkFunctions.c" \
+"../diskio.c" \
+"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/gpio_if.c" \
+"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/i2c_if.c" \
+"../main.c" \
+"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/network_common.c" \
+"../pinmux2.c" \
+"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/startup_ccs.c" \
+"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/example/common/uart_if.c" 
+
+

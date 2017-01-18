@@ -1,0 +1,42 @@
+
+**** Build of configuration Release for project bootmgr ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: ../main.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O3 --opt_for_speed=0 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/bootmgr" --include_path="D:/workspace/application_bootloader/" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink_extlib/flc" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=cc3200 --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="main.d"  "../main.c"
+
+>> Compilation failure
+subdir_rules.mk:7: recipe for target 'main.obj' failed
+"../main.c", line 55: fatal error #1965: cannot open source file "hw_ints.h"
+1 catastrophic error detected in the compilation of "../main.c".
+Compilation terminated.
+gmake: *** [main.obj] Error 1
+'Building file: D:/workspace/common/network_common.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O3 --opt_for_speed=0 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/bootmgr" --include_path="D:/workspace/application_bootloader/" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink_extlib/flc" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=cc3200 --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="network_common.d"  "D:/workspace/common/network_common.c"
+
+>> Compilation failure
+subdir_rules.mk:14: recipe for target 'network_common.obj' failed
+"D:/workspace/common/network_common.c", line 42: fatal error #1965: cannot open source file "simplelink.h"
+1 catastrophic error detected in the compilation of "D:/workspace/common/network_common.c".
+Compilation terminated.
+gmake: *** [network_common.obj] Error 1
+'Building file: ../startup_ccs.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O3 --opt_for_speed=0 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/bootmgr" --include_path="D:/workspace/application_bootloader/" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink_extlib/flc" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=cc3200 --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="startup_ccs.d"  "../startup_ccs.c"
+'Finished building: ../startup_ccs.c'
+' '
+'Building file: ../udma_if.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O3 --opt_for_speed=0 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/bootmgr" --include_path="D:/workspace/application_bootloader/" --include_path="D:/driverlib" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink_extlib/flc" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=cc3200 --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="udma_if.d"  "../udma_if.c"
+
+>> Compilation failure
+subdir_rules.mk:28: recipe for target 'udma_if.obj' failed
+"../udma_if.c", line 39: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../udma_if.c".
+Compilation terminated.
+gmake: *** [udma_if.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****

@@ -1,0 +1,25 @@
+
+**** Build of configuration Release for project relocator ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: ../main.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O3 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" -g --gcc --define=cc3200 --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --gen_func_subsections=on --preproc_with_compile --preproc_dependency="main.d"  "../main.c"
+'Finished building: ../main.c'
+' '
+'Building file: ../startup_ccs.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O3 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" -g --gcc --define=cc3200 --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --gen_func_subsections=on --preproc_with_compile --preproc_dependency="startup_ccs.d"  "../startup_ccs.c"
+'Finished building: ../startup_ccs.c'
+' '
+'Building target: relocator.out'
+'Invoking: ARM Linker'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O3 -g --gcc --define=cc3200 --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --gen_func_subsections=on -z -m"relocator.map" --heap_size=0x0 --stack_size=0x4 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --disable_auto_rts --display_error_number --diag_wrap=off --warn_sections --xml_link_info="relocator_linkInfo.xml" --entry_point=ResetISR --rom_model --unused_section_elimination=on -o "relocator.out" "./main.obj" "./startup_ccs.obj" "../cc3200v1p32.cmd"  -llibc.a 
+<Linking>
+warning #10063-D: entry-point symbol other than "_c_int00" specified:  "ResetISR"
+'Finished building target: relocator.out'
+' '
+"C:/TI/ccsv6/utils/tiobj2bin/tiobj2bin" "relocator.out" "relocator.bin" "C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armofd" "C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex" "C:/TI/ccsv6/utils/tiobj2bin/mkhex4bin"
+' '
+
+**** Build Finished ****

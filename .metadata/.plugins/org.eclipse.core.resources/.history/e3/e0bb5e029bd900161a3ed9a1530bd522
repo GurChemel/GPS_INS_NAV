@@ -1,0 +1,21 @@
+/*
+ * board.c
+ *
+ *  Created on: 13 Jan 2017
+ *      Author: Samsung
+ */
+
+#include "driverlib.h"
+
+static void
+BoardInit(void)
+{
+
+	IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
+
+	IntMasterEnable();
+	IntEnable(FAULT_SYSTICK);
+
+	PRCMCC3200MCUInit();
+}
+

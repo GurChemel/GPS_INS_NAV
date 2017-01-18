@@ -1,0 +1,24 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+../interfaces/terninal.c 
+
+OBJS += \
+./interfaces/terninal.obj 
+
+C_DEPS += \
+./interfaces/terninal.d 
+
+C_DEPS__QUOTED += \
+"interfaces\terninal.d" 
+
+OBJS__QUOTED += \
+"interfaces\terninal.obj" 
+
+C_SRCS__QUOTED += \
+"../interfaces/terninal.c" 
+
+
