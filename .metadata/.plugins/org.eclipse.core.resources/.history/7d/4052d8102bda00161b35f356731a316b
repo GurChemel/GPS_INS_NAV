@@ -1,0 +1,37 @@
+typedef struct {
+	double X;
+	double Y;
+	double Z;
+} gps_input_data_str;
+
+typedef struct {
+	double Hx;
+	double Hy;
+	double Hz;
+} mag_input_data_str;
+
+typedef struct {
+	double Ax;
+	double Ay;
+	double Az;
+} acc_input_data_str;
+
+typedef struct {
+	double Wr;
+	double Wy;
+	double Wp;
+} gyr_input_data_str;
+
+void get_mag_data(mag_input_data_str* mag_input);
+void convert_mag_raw_data_2_units(Mag_inner_data_str* mag_query);
+void copy_mag_data_2_algorithm(mag_input_data_str* mag_query, Mag_inner_data_str mag_data );
+void get_gyr_data(gyr_input_data_str* gyr_input);
+void convert_gyr_raw_data_2_units(Gyr_local_data* gyr_data);
+void copy_data_2_algorithm(gyr_input_data_str* gyr_query, Gyr_local_data* gyr_data);
+void get_acc_data(acc_input_data_str* acc_input);
+void convert_acc_raw_data_2_units(Acc_local_data* acc_data);
+void copy_acc_data_2_algorithm(acc_input_data_str* acc_query, Acc_local_data acc_data );
+void get_gps_data(gps_input_data_str* gps_input);
+
+void init_board_and_sensors();
+

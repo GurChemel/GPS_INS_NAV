@@ -1,0 +1,18 @@
+/*
+ * init_hw.h
+ *
+ *  Created on: 13 Jan 2017
+ *      Author: Samsung
+ */
+
+#ifndef INIT_HW_H_
+#define INIT_HW_H_
+
+#include "ff.h"
+#include "pinmux.h"
+#include "SD_card.h"
+#include "DS2401.h"
+
+static void BoardInit(void);
+
+#endif /* INIT_HW_H_ */

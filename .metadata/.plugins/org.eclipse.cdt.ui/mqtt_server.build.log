@@ -1,0 +1,53 @@
+
+**** Build of configuration Release for project mqtt_server ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: ../main.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/mqtt_server/" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink/source/" --include_path="D:/driverlib/" --include_path="D:/example/common/" --include_path="D:/oslib/" --include_path="D:/third_party/FreeRTOS/source/include/" --include_path="D:/third_party/FreeRTOS/source/" --include_path="D:/third_party/FreeRTOS/source/portable/CCS/ARM_CM3" --include_path="D:/netapps/mqtt/common/" --include_path="D:/netapps/mqtt/server/" --include_path="D:/netapps/mqtt/client/" --include_path="D:/netapps/mqtt/include/" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="main.d"  "../main.c"
+
+>> Compilation failure
+subdir_rules.mk:21: recipe for target 'main.obj' failed
+gmake: *** No rule to make target 'D:/example/common/button_if.c', needed by 'button_if.obj'.
+gmake: *** No rule to make target 'D:/example/common/gpio_if.c', needed by 'gpio_if.obj'.
+"../main.c", line 44: fatal error #1965: cannot open source file "simplelink.h"
+1 catastrophic error detected in the compilation of "../main.c".
+Compilation terminated.
+gmake: *** [main.obj] Error 1
+'Building file: D:/workspace/common/network_common.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/mqtt_server/" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink/source/" --include_path="D:/driverlib/" --include_path="D:/example/common/" --include_path="D:/oslib/" --include_path="D:/third_party/FreeRTOS/source/include/" --include_path="D:/third_party/FreeRTOS/source/" --include_path="D:/third_party/FreeRTOS/source/portable/CCS/ARM_CM3" --include_path="D:/netapps/mqtt/common/" --include_path="D:/netapps/mqtt/server/" --include_path="D:/netapps/mqtt/client/" --include_path="D:/netapps/mqtt/include/" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="network_common.d"  "D:/workspace/common/network_common.c"
+
+>> Compilation failure
+subdir_rules.mk:28: recipe for target 'network_common.obj' failed
+"D:/workspace/common/network_common.c", line 42: fatal error #1965: cannot open source file "simplelink.h"
+1 catastrophic error detected in the compilation of "D:/workspace/common/network_common.c".
+Compilation terminated.
+gmake: *** [network_common.obj] Error 1
+gmake: *** No rule to make target 'D:/example/common/network_if.c', needed by 'network_if.obj'.
+'Building file: ../pinmux.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/mqtt_server/" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink/source/" --include_path="D:/driverlib/" --include_path="D:/example/common/" --include_path="D:/oslib/" --include_path="D:/third_party/FreeRTOS/source/include/" --include_path="D:/third_party/FreeRTOS/source/" --include_path="D:/third_party/FreeRTOS/source/portable/CCS/ARM_CM3" --include_path="D:/netapps/mqtt/common/" --include_path="D:/netapps/mqtt/server/" --include_path="D:/netapps/mqtt/client/" --include_path="D:/netapps/mqtt/include/" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="pinmux.d"  "../pinmux.c"
+
+>> Compilation failure
+subdir_rules.mk:42: recipe for target 'pinmux.obj' failed
+"../pinmux.c", line 22: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../pinmux.c".
+Compilation terminated.
+gmake: *** [pinmux.obj] Error 1
+'Building file: ../server_client_cbs.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/mqtt_server/" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include/" --include_path="D:/simplelink/source/" --include_path="D:/driverlib/" --include_path="D:/example/common/" --include_path="D:/oslib/" --include_path="D:/third_party/FreeRTOS/source/include/" --include_path="D:/third_party/FreeRTOS/source/" --include_path="D:/third_party/FreeRTOS/source/portable/CCS/ARM_CM3" --include_path="D:/netapps/mqtt/common/" --include_path="D:/netapps/mqtt/server/" --include_path="D:/netapps/mqtt/client/" --include_path="D:/netapps/mqtt/include/" --include_path="D:/simplelink_extlib/provisioninglib" -g --gcc --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="server_client_cbs.d"  "../server_client_cbs.c"
+
+>> Compilation failure
+subdir_rules.mk:49: recipe for target 'server_client_cbs.obj' failed
+"..\server_client_cbs.h", line 16: fatal error #1965: cannot open source file "sl_mqtt_server.h"
+1 catastrophic error detected in the compilation of "../server_client_cbs.c".
+Compilation terminated.
+gmake: *** [server_client_cbs.obj] Error 1
+gmake: *** No rule to make target 'D:/example/common/startup_ccs.c', needed by 'startup_ccs.obj'.
+gmake: *** No rule to make target 'D:/example/common/timer_if.c', needed by 'timer_if.obj'.
+gmake: *** No rule to make target 'D:/example/common/uart_if.c', needed by 'uart_if.obj'.
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****

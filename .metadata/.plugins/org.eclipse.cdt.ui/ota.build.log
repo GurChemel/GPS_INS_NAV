@@ -1,0 +1,38 @@
+
+**** Build of configuration Release for project ota ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: D:/workspace/simplelink_extlib/ota/CdnClient.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --abi=eabi -me -O2 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink_extlib/ota" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" --include_path="D:/workspace/simplelink_extlib/include/" --include_path="D:/workspace/oslib/" --include_path="D:/workspace/simplelink/" --include_path="D:/workspace/simplelink/include/" --include_path="D:/workspace/simplelink/source/" --include_path="D:/workspace/simplelink_extlib/provisioninglib" --gcc --define=cc3200 --display_error_number --diag_warning=225 --diag_wrap=off --preproc_with_compile --preproc_dependency="CdnClient.d"  "D:/workspace/simplelink_extlib/ota/CdnClient.c"
+'Finished building: D:/workspace/simplelink_extlib/ota/CdnClient.c'
+' '
+'Building file: D:/workspace/simplelink_extlib/ota/LogClient.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --abi=eabi -me -O2 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink_extlib/ota" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" --include_path="D:/workspace/simplelink_extlib/include/" --include_path="D:/workspace/oslib/" --include_path="D:/workspace/simplelink/" --include_path="D:/workspace/simplelink/include/" --include_path="D:/workspace/simplelink/source/" --include_path="D:/workspace/simplelink_extlib/provisioninglib" --gcc --define=cc3200 --display_error_number --diag_warning=225 --diag_wrap=off --preproc_with_compile --preproc_dependency="LogClient.d"  "D:/workspace/simplelink_extlib/ota/LogClient.c"
+'Finished building: D:/workspace/simplelink_extlib/ota/LogClient.c'
+' '
+'Building file: D:/workspace/simplelink_extlib/ota/OtaApp.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --abi=eabi -me -O2 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink_extlib/ota" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" --include_path="D:/workspace/simplelink_extlib/include/" --include_path="D:/workspace/oslib/" --include_path="D:/workspace/simplelink/" --include_path="D:/workspace/simplelink/include/" --include_path="D:/workspace/simplelink/source/" --include_path="D:/workspace/simplelink_extlib/provisioninglib" --gcc --define=cc3200 --display_error_number --diag_warning=225 --diag_wrap=off --preproc_with_compile --preproc_dependency="OtaApp.d"  "D:/workspace/simplelink_extlib/ota/OtaApp.c"
+'Finished building: D:/workspace/simplelink_extlib/ota/OtaApp.c'
+' '
+'Building file: D:/workspace/simplelink_extlib/ota/OtaClient.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --abi=eabi -me -O2 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink_extlib/ota" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" --include_path="D:/workspace/simplelink_extlib/include/" --include_path="D:/workspace/oslib/" --include_path="D:/workspace/simplelink/" --include_path="D:/workspace/simplelink/include/" --include_path="D:/workspace/simplelink/source/" --include_path="D:/workspace/simplelink_extlib/provisioninglib" --gcc --define=cc3200 --display_error_number --diag_warning=225 --diag_wrap=off --preproc_with_compile --preproc_dependency="OtaClient.d"  "D:/workspace/simplelink_extlib/ota/OtaClient.c"
+'Finished building: D:/workspace/simplelink_extlib/ota/OtaClient.c'
+' '
+'Building file: D:/workspace/simplelink_extlib/ota/OtaHttp.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --abi=eabi -me -O2 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink_extlib/ota" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" --include_path="D:/workspace/simplelink_extlib/include/" --include_path="D:/workspace/oslib/" --include_path="D:/workspace/simplelink/" --include_path="D:/workspace/simplelink/include/" --include_path="D:/workspace/simplelink/source/" --include_path="D:/workspace/simplelink_extlib/provisioninglib" --gcc --define=cc3200 --display_error_number --diag_warning=225 --diag_wrap=off --preproc_with_compile --preproc_dependency="OtaHttp.d"  "D:/workspace/simplelink_extlib/ota/OtaHttp.c"
+'Finished building: D:/workspace/simplelink_extlib/ota/OtaHttp.c'
+' '
+'Building target: ota.a'
+'Invoking: ARM Archiver'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armar" r "ota.a" "./CdnClient.obj" "./LogClient.obj" "./OtaApp.obj" "./OtaClient.obj" "./OtaHttp.obj"  
+  ==>  new archive 'ota.a'
+  ==>  building archive 'ota.a'
+'Finished building target: ota.a'
+' '
+
+**** Build Finished ****

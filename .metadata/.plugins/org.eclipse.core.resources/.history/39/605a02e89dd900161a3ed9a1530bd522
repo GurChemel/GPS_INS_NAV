@@ -1,0 +1,15 @@
+/*
+ * init_hw.h
+ *
+ *  Created on: 13 Jan 2017
+ *      Author: Samsung
+ */
+
+#ifndef INIT_HW_H_
+#define INIT_HW_H_
+
+static void DisplayBanner(char * AppName);
+static void BoardInit(void);
+
+
+#endif /* INIT_HW_H_ */

@@ -1,0 +1,56 @@
+
+**** Build of configuration Release for project adc ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: D:/workspace/common/startup_ccs.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -Ooff --include_path="D:/workspace/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/" --include_path="D:/workspace/common" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" -g --gcc --define=ccs --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --printf_support=full --preproc_with_compile --preproc_dependency="startup_ccs.d"  "D:/workspace/common/startup_ccs.c"
+'Finished building: D:/workspace/common/startup_ccs.c'
+' '
+'Building file: D:/workspace/common/uart_if.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -Ooff --include_path="D:/workspace/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/" --include_path="D:/workspace/common" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" -g --gcc --define=ccs --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --printf_support=full --preproc_with_compile --preproc_dependency="uart_if.d"  "D:/workspace/common/uart_if.c"
+'Finished building: D:/workspace/common/uart_if.c'
+' '
+'Building target: adc.out'
+'Invoking: ARM Linker'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -Ooff -g --gcc --define=ccs --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --printf_support=full -z -m"adc.map" --heap_size=0x00008000 --stack_size=0x00001000 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --display_error_number --diag_wrap=off --warn_sections --xml_link_info="adc_linkInfo.xml" --rom_model -o "adc.out" "./adc_userinput.obj" "./main.obj" "./pinmux.obj" "./startup_ccs.obj" "./uart_if.obj" "../cc3200v1p32.cmd" "../ccs/cc3200v1p32.cmd"  -llibc.a -l"D:/driverlib/ccs/Release/driverlib.a" 
+<Linking>
+"../ccs/cc3200v1p32.cmd", line 62: error #10263: SRAM_CODE memory range has already been specified
+"../ccs/cc3200v1p32.cmd", line 62: error #10264: SRAM_CODE memory range overlaps existing memory range SRAM_CODE
+"../ccs/cc3200v1p32.cmd", line 63: error #10263: SRAM_DATA memory range has already been specified
+"../ccs/cc3200v1p32.cmd", line 63: error #10264: SRAM_DATA memory range overlaps existing memory range SRAM_DATA
+error #10008-D: cannot find file "D:/driverlib/ccs/Release/driverlib.a"
+
+ undefined               first referenced
+  symbol                     in file     
+ ---------               ----------------
+ ADCChannelDisable       ./main.obj      
+ ADCChannelEnable        ./main.obj      
+ ADCEnable               ./main.obj      
+ ADCFIFOLvlGet           ./main.obj      
+ ADCFIFORead             ./main.obj      
+ ADCTimerConfig          ./main.obj      
+ ADCTimerEnable          ./main.obj      
+ IntEnable               ./main.obj      
+ IntMasterEnable         ./main.obj      
+ IntVTableBaseSet        ./main.obj      
+ PRCMCC3200MCUInit       ./main.obj      
+ PRCMPeripheralClkEnable ./pinmux.obj    
+ PRCMPeripheralClockGet  ./uart_if.obj   
+ PinTypeADC              ./main.obj      
+ PinTypeUART             ./pinmux.obj    
+ UARTCharGetNonBlocking  ./uart_if.obj   
+ UARTCharPut             ./uart_if.obj   
+ UARTCharsAvail          ./uart_if.obj   
+ UARTConfigSetExpClk     ./uart_if.obj   
+
+error #10234-D: unresolved symbols remain
+
+error #10010: errors encountered during linking; "adc.out" not built
+>> Compilation failure
+makefile:148: recipe for target 'adc.out' failed
+gmake: *** [adc.out] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****

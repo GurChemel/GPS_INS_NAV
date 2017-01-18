@@ -1,0 +1,22 @@
+/*
+ * GPS.h
+ *
+ *  Created on: Aug 4, 2016
+ *      Author: Rafi
+ */
+
+#ifndef GPS_H_
+#define GPS_H_
+
+
+void GPS_on(void);
+void GPS_off(void);
+
+#define SYNC_CHAR1 0xB5
+#define SYNC_CHAR1 0x62
+#define MSG_HDR ((SYNC_CHAR1 << 8) & SYNC_CHAR1)
+
+#define CFG_MSG_CLASS 0x06
+#define NAV_MSG_CLASS 0x01
+
+#endif /* GPS_H_ */

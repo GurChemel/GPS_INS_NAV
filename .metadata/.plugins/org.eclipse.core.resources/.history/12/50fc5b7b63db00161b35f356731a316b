@@ -1,0 +1,7 @@
+# FIXED
+
+NMEA.obj: ../NMEA.c
+NMEA.obj: ../NMEA.h
+
+../NMEA.c: 
+../NMEA.h: 

@@ -1,0 +1,18 @@
+
+**** Build of configuration Release for project flc ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: D:/workspace/simplelink_extlib/flc/flc.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib --abi=eabi -me -O2 --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/workspace/simplelink_extlib/flc" --include_path="D:/workspace/driverlib" --include_path="D:/workspace/inc" --include_path="D:/workspace/simplelink_extlib/include/" --include_path="D:/workspace/oslib/" --include_path="D:/workspace/simplelink/" --include_path="D:/workspace/simplelink/include/" --include_path="D:/workspace/simplelink/source/" --include_path="D:/workspace/simplelink_extlib/provisioninglib" --gcc --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="flc.d"  "D:/workspace/simplelink_extlib/flc/flc.c"
+'Finished building: D:/workspace/simplelink_extlib/flc/flc.c'
+' '
+'Building target: flc.a'
+'Invoking: ARM Archiver'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armar" r "flc.a" "./flc.obj"   
+  ==>  new archive 'flc.a'
+  ==>  building archive 'flc.a'
+'Finished building target: flc.a'
+' '
+
+**** Build Finished ****

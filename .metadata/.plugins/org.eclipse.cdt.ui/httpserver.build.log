@@ -1,0 +1,50 @@
+
+**** Build of configuration Release for project httpserver ****
+
+"C:\\TI\\ccsv6\\utils\\bin\\gmake" -k all 
+'Building file: ../main.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/example/common" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include" --include_path="D:/simplelink/source" --include_path="D:/driverlib" --include_path="D:/oslib/" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="main.d"  "../main.c"
+
+>> Compilation failure
+subdir_rules.mk:14: recipe for target 'main.obj' failed
+gmake: *** No rule to make target 'D:/example/common/gpio_if.c', needed by 'gpio_if.obj'.
+"../main.c", line 62: fatal error #1965: cannot open source file "simplelink.h"
+1 catastrophic error detected in the compilation of "../main.c".
+Compilation terminated.
+gmake: *** [main.obj] Error 1
+'Building file: D:/workspace/common/network_common.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/example/common" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include" --include_path="D:/simplelink/source" --include_path="D:/driverlib" --include_path="D:/oslib/" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="network_common.d"  "D:/workspace/common/network_common.c"
+
+>> Compilation failure
+subdir_rules.mk:21: recipe for target 'network_common.obj' failed
+"D:/workspace/common/network_common.c", line 42: fatal error #1965: cannot open source file "simplelink.h"
+1 catastrophic error detected in the compilation of "D:/workspace/common/network_common.c".
+Compilation terminated.
+gmake: *** [network_common.obj] Error 1
+'Building file: ../pinmux.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/example/common" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include" --include_path="D:/simplelink/source" --include_path="D:/driverlib" --include_path="D:/oslib/" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="pinmux.d"  "../pinmux.c"
+
+>> Compilation failure
+subdir_rules.mk:28: recipe for target 'pinmux.obj' failed
+"../pinmux.c", line 45: fatal error #1965: cannot open source file "hw_types.h"
+1 catastrophic error detected in the compilation of "../pinmux.c".
+Compilation terminated.
+gmake: *** [pinmux.obj] Error 1
+'Building file: ../smartconfig.c'
+'Invoking: ARM Compiler'
+"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --include_path="D:/example/common" --include_path="D:/inc" --include_path="D:/simplelink/" --include_path="D:/simplelink/include" --include_path="D:/simplelink/source" --include_path="D:/driverlib" --include_path="D:/oslib/" --include_path="D:/simplelink_extlib/provisioninglib" -g --define=ccs --define=cc3200 --define=USE_FREERTOS --define=SL_PLATFORM_MULTI_THREADED --diag_wrap=off --diag_warning=225 --display_error_number --preproc_with_compile --preproc_dependency="smartconfig.d"  "../smartconfig.c"
+
+>> Compilation failure
+subdir_rules.mk:35: recipe for target 'smartconfig.obj' failed
+"../smartconfig.c", line 39: fatal error #1965: cannot open source file "simplelink.h"
+1 catastrophic error detected in the compilation of "../smartconfig.c".
+Compilation terminated.
+gmake: *** [smartconfig.obj] Error 1
+gmake: *** No rule to make target 'D:/example/common/startup_ccs.c', needed by 'startup_ccs.obj'.
+gmake: *** No rule to make target 'D:/example/common/uart_if.c', needed by 'uart_if.obj'.
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****

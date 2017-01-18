@@ -1,0 +1,55 @@
+/*
+ * GPS.c
+ *
+ *  Created on: Aug 4, 2016
+ *      Author: Rafi
+ */
+
+
+#include "sensors.h"
+
+void GPS_on(void)
+{
+	GPIOPinWrite(GPIOA1_BASE, GPIO_PIN_1, 0x00); //Turn on GPS
+}
+
+void GPS_off(void)
+{
+	GPIOPinWrite(GPIOA1_BASE, GPIO_PIN_1, 0xFF); //Turn off GPS
+}
+
+
+build_gps_ubx_message{
+	if (get)
+		switch (msg_name)
+			case CFG_MSG :
+				int message_Len = MSG_HDR_LEN + MSG_CLASS_LEN + MSG_ID_LEN+ MSG_LEN_IND + pay_len + CKS_LEN;
+				char msg[message_Len]= {SYNC_CHAR1,SYNC_CHAR2,msg_class,;
+
+
+
+
+				((MSG_HDR << MSG_HDR_LEN) & msg_class) << MSG_CLASS_LEN) & msg_ID) <<  MSG_ID_LEN) & pay) << pay_len
+
+
+
+			case NAV_MSG :
+
+	else if (set)
+		switch (msg_name)
+			case CFG_MSG :
+			case NAV_MSG :
+}
+
+
+
+void calc_msg_checksum (int* CK_A, int* CK_B, int msg_body, int msg_bit_len){
+	int I;
+	CK_A = 0, CK_B = 0
+	for(I=0;I<msg_bit_len;I++){
+		CK_A = CK_A + (msg_body & 0x1);
+		CK_B = CK_B + CK_A;
+		msg_body = (msg_body >> 1);
+	}
+}
+
