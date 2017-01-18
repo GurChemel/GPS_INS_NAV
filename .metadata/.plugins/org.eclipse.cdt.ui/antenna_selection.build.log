@@ -1,3 +1,0 @@
-Buildfile generation error occurred..
-Referenced project 'ti_rtos_config' does not exist in the workspace. Project 'antenna_selection' may not build as expected.
-Build stopped..
