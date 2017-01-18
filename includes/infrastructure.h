@@ -8,6 +8,10 @@
 #ifndef INCLUDES_INFRASTRUCTURE_H_
 #define INCLUDES_INFRASTRUCTURE_H_
 
+#ifndef DEBUG_PRINT
+#define DEBUG_PRINT  Report
+#endif
+
 typedef struct {
 	double X;
 	double Y;

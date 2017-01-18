@@ -41,7 +41,7 @@ ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 -l"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/simplelink/ccs/NON_OS/simplelink.a" \
--l"D:/workspace/fatfs/Release/fatfs.a" \
+-l"C:/Project A/workspace/fatfs/Release/fatfs.a" \
 -l"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/netapps/json/ccs/Release/json.a" \
 -l"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/ccs/Release/driverlib.a" \
 
@@ -179,7 +179,7 @@ all: GPS-INS-NAV.out
 GPS-INS-NAV.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib -me -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"GPS-INS-NAV.map" --stack_size=0x512 --heap_size=0x0 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"D:/workspace/sdhost_fatfs" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="GPS-INS-NAV_linkInfo.xml" --rom_model -o "GPS-INS-NAV.out" $(ORDERED_OBJS)
+	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib -me -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"GPS-INS-NAV.map" --stack_size=0x512 --heap_size=0x0 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/Project A/workspace/sdhost_fatfs" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --display_error_number --warn_sections --diag_wrap=off --xml_link_info="GPS-INS-NAV_linkInfo.xml" --rom_model -o "GPS-INS-NAV.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

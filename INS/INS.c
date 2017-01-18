@@ -111,9 +111,15 @@ void INS_calc(system_state_str* systemState)
 	rpy_to_enu_mat[2][2]=(-cr*cp);
 
 	// Get acceleration in RPY and convert them to ENU.
-	acc_input_data_str acc_data;			//	acc_data.Ax , acc_data.Ay , acc_data.Az
+	acc_input_data_str acc_data;			//	acc_data.Ax , acc_data.Ay , acc_data.Az , acc_data.time
+	if (DEBUG_MODE){
+		DEBUG_PRINT("Get Accelerometer data...\n\r");
+	}
 	get_acc_data(&acc_data);
-	double acc_dt = acc_data.time; // TODO: Gur NOTICE: i changed this to read time straight fron acc_data struct
+	if (DEBUG_MODE){
+		DEBUG_PRINT("Accelerometer (Ax,Ay,Az,dt): (%f,%f,%f,%f). \n\r",acc_data.Ax,acc_data.Ay,acc_data.Az,acc_data.time);
+	}
+	double acc_dt = acc_data.time;
 	double rpy_accel[3];
 	rpy_accel[X_pos]=acc_data.Ax;
 	rpy_accel[Y_pos]=acc_data.Ay;
@@ -123,17 +129,23 @@ void INS_calc(system_state_str* systemState)
 	enu_accel[Z_pos]=enu_accel[Z_pos]+G_VALUE;	// Compensate on earth's Gravitational force on the Up axis.
 
 	// Calculate new Position and velocity.
-	systemState->Px=(systemState->Px)+(systemState->Vx)*acc_dt+0.5*(rpy_accel[X_pos])*(acc_dt*acc_dt);
-	systemState->Py=(systemState->Py)+(systemState->Vy)*acc_dt+0.5*(rpy_accel[Y_pos])*(acc_dt*acc_dt);
-	systemState->Pz=(systemState->Pz)+(systemState->Vz)*acc_dt+0.5*(rpy_accel[Z_pos])*(acc_dt*acc_dt);
-	systemState->Vx=(systemState->Vx)+(rpy_accel[X_pos])*acc_dt;
-	systemState->Vy=(systemState->Vy)+(rpy_accel[Y_pos])*acc_dt;
-	systemState->Vz=(systemState->Vz)+(rpy_accel[Z_pos])*acc_dt;
+	systemState->Px=(systemState->Px)+(systemState->Vx)*acc_dt+0.5*(enu_accel[X_pos])*(acc_dt*acc_dt);
+	systemState->Py=(systemState->Py)+(systemState->Vy)*acc_dt+0.5*(enu_accel[Y_pos])*(acc_dt*acc_dt);
+	systemState->Pz=(systemState->Pz)+(systemState->Vz)*acc_dt+0.5*(enu_accel[Z_pos])*(acc_dt*acc_dt);
+	systemState->Vx=(systemState->Vx)+(enu_accel[X_pos])*acc_dt;
+	systemState->Vy=(systemState->Vy)+(enu_accel[Y_pos])*acc_dt;
+	systemState->Vz=(systemState->Vz)+(enu_accel[Z_pos])*acc_dt;
 
 	// Get velocity in Roll Pitch Yaw and calculate new values.
-	gyr_input_data_str gyr_data;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy
+	gyr_input_data_str gyr_data;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
+	if (DEBUG_MODE){
+		DEBUG_PRINT("Get Gyroscope data...\n\r");
+	}
 	get_gyr_data(&gyr_data);
-	double gyr_dt= gyr_data.time;		//TODO: same here
+	if (DEBUG_MODE){
+		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr.data.time);
+	}
+	double gyr_dt= gyr_data.time;
 
 	systemState->Roll=(systemState->Roll)+gyr_dt*(gyr_data.Wr);
 	systemState->Pitch=(systemState->Pitch)+gyr_dt*(gyr_data.Wp);
