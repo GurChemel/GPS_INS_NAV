@@ -13,11 +13,9 @@ typedef struct {
 	Mag_field Hx;
 	Mag_field Hy;
 	Mag_field Hz;
-}Mag_inner_data_str;
+}Mag_local_data_str;
 
 int init_HMC5883(char addr, char cal);
-int HMC5883_read_magdata(char addr, Mag_inner_data_str* mag_data);
-void convert_mag_raw_data_2_units(Mag_inner_data_str* mag_input);
-
+int HMC5883_read_magdata(char addr, Mag_local_data_str* mag_data);
 
 #endif /* HMC5883_H_ */

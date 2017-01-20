@@ -62,7 +62,7 @@ int init_ITG3200(char addr)
 
 
 
-int ITG3200_read_gyrdata(char addr, Gyr_local_data* gyr_data)
+int ITG3200_read_gyrdata(char addr, Gyr_local_data_str* gyr_data)
 {
 	unsigned char data[2];
 	unsigned char rdata[6];

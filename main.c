@@ -3,10 +3,12 @@
 *****************************************************************************/
 
 //#include "includes.h"
-#include "includes/infrastructure.h"
 #include "main.h"
+#include "includes/infrastructure.h"
 #include "INS/INS.h"
 #include "INS/kalman_filter.h"
+#include "common/uart_if.h"
+#include "includes/std_inc.h"
 
 /*****************************************************************************
                  General Functions
@@ -34,7 +36,7 @@ int main(void)
 
 	if (DEBUG_MODE){
 		DEBUG_PRINT("\n\rSystem Initialized:\n\r");
-		DEBUG_PRINT("\t Local Reference (x,y,z) in ECEF: (%f,%f,%f).\n\r",local_ref_in_ECEF(X_pos),local_ref_in_ECEF(Y_pos),local_ref_in_ECEF(Z_pos));
+		DEBUG_PRINT("\t Local Reference (x,y,z) in ECEF: (%f, %f, %f).\n\r",(local_ref_in_ECEF[X_pos]),(local_ref_in_ECEF[Y_pos]),(local_ref_in_ECEF[Z_pos]));
 		DEBUG_PRINT("\t System State (x,y,z) in ENU: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
 		DEBUG_PRINT("\t System State (Vx,Vy,Vz) in ENU: (%f,%f,%f).\n\r",systemState.Vx,systemState.Vy,systemState.Vz);
 		DEBUG_PRINT("\t System State (Roll,Pitch,Yaw) from ENU: (%f,%f,%f).\n\r",systemState.Roll,systemState.Pitch,systemState.Yaw);

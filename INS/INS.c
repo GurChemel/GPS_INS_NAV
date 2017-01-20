@@ -11,6 +11,8 @@
 #include "INS.h"
 #include "../includes/infrastructure.h"
 
+
+
 // 3*3 Matrix multiplication. out_vec=matrix*in_vec.
 void mat_dot_vec(double matrix[3][3], double in_vec[3], double out_vec[3])
 {
@@ -143,7 +145,7 @@ void INS_calc(system_state_str* systemState)
 	}
 	get_gyr_data(&gyr_data);
 	if (DEBUG_MODE){
-		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr.data.time);
+		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr_data.time);
 	}
 	double gyr_dt= gyr_data.time;
 

@@ -22,7 +22,6 @@ extern void (* const g_pfnVectors[])(void);
 #if defined(ewarm)
 extern uVectorEntry __vector_table;
 #endif
-char printing;
 
 //*****************************************************************************
 //

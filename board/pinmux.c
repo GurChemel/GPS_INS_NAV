@@ -47,32 +47,6 @@
 #include "../includes/inc.h"
 #include "../includes/driverlib.h"
 
-
-void UART1_Handler(void)
-{
-	unsigned long UART_STATUS;
-	//	char stringinging[] = "$GPRMC,165431.00,A,4029.88110,N,07424.85655,W,0.492,,030816,,,A*64";
-
-	UART_STATUS = UARTIntStatus(UARTA1_BASE, true);
-	UARTIntClear(UARTA1_BASE, UART_INT_RX);
-	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
-
-
-
-	while((UART_STATUS & UART_INT_RX) && UARTCharsAvail(UARTA1_BASE))
-	{
-		printing = (char) UARTCharGetNonBlocking(UARTA1_BASE);
-		//	printing = stringinging[kkk++];
-		//	if(kkk>strlen(stringinging)) kkk=0;
-		ParseGPS(printing);
-		//if(gpsFix==0)	UART_PRINT(&printing);
-	}
-
-	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
-}
-
-
-
 //*****************************************************************************
 void PinMuxConfig(void)
 {
@@ -142,14 +116,6 @@ void PinMuxConfig(void)
 	PinTypeUART(PIN_07, PIN_MODE_5);
 	// Configure PIN_08 (GPIO_16) for GPS UART1 UART1_RX
 	PinTypeUART(PIN_08, PIN_MODE_5);
-    //Uart Configurations:
-	UARTConfigSetExpClk(UARTA1_BASE,PRCMPeripheralClockGet(PRCM_UARTA1),
-			9600, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
-					UART_CONFIG_PAR_NONE));
-	UARTFIFODisable(UARTA1_BASE); //disable fifo
-	UARTIntRegister(UARTA1_BASE, UART1_Handler);
-	UARTIntEnable(UARTA1_BASE, UART_INT_RX); //enable interrupts
-	UARTEnable(UARTA1_BASE);
 
 /********************************************************************************/
 
@@ -158,11 +124,6 @@ void PinMuxConfig(void)
 	PinTypeI2C(PIN_03, PIN_MODE_5);
 	// Configure PIN_04 for I2C0 I2C_SDA
 	PinTypeI2C(PIN_04, PIN_MODE_5);
-	//Interface Configurations
-	PRCMPeripheralReset(PRCM_I2CA0);
-	I2C_IF_Open(I2C_MASTER_MODE_STD);
-	I2CMasterIntClearEx(I2CA0_BASE, 0xFFF);
-	I2CMasterEnable(I2CA0_BASE);
 
 /********************************************************************************/
 

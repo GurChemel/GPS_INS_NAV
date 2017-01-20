@@ -66,7 +66,7 @@ int init_ADXL345(char addr)
 
 
 
-int ADXL345_read_accdata(char addr, Acc_local_data* acc_data)
+int ADXL345_read_accdata(char addr, Acc_local_data_str* acc_data)
 {
 	unsigned char data[2];
 	unsigned char rdata[10];

@@ -68,7 +68,7 @@ int init_HMC5883(char addr, char cal)
 
 
 
-int HMC5883_read_magdata(char addr, Mag_inner_data_str* mag_data )
+int HMC5883_read_magdata(char addr, Mag_local_data_str* mag_data )
 {
 	unsigned char data[2];
 	unsigned char rdata[10];

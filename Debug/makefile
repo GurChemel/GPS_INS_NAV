@@ -36,12 +36,14 @@ ORDERED_OBJS += \
 "./common/utils_if.obj" \
 "./common/wdt_if.obj" \
 "./interfaces/diskio.obj" \
+"./interfaces/local_i2c_if.obj" \
+"./interfaces/local_uart_if.obj" \
 "./interfaces/terninal.obj" \
 "../cc3200v1p32.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 -l"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/simplelink/ccs/NON_OS/simplelink.a" \
--l"C:/Project A/workspace/fatfs/Release/fatfs.a" \
+-l"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/ccs/Release/fatfs.a" \
 -l"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/netapps/json/ccs/Release/json.a" \
 -l"C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/ccs/Release/driverlib.a" \
 
@@ -179,7 +181,7 @@ all: GPS-INS-NAV.out
 GPS-INS-NAV.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib -me -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"GPS-INS-NAV.map" --stack_size=0x512 --heap_size=0x0 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/Project A/workspace/sdhost_fatfs" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --display_error_number --warn_sections --diag_wrap=off --xml_link_info="GPS-INS-NAV_linkInfo.xml" --rom_model -o "GPS-INS-NAV.out" $(ORDERED_OBJS)
+	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib -me -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"GPS-INS-NAV.map" --stack_size=0x512 --heap_size=0x0 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/Users/Samsung/Desktop/project a/workspace/sdhost_fatfs" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="GPS-INS-NAV_linkInfo.xml" --rom_model -o "GPS-INS-NAV.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -192,8 +194,8 @@ GPS-INS-NAV.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "infrastructure.d" "main.d" "INS\INS.d" "INS\kalman_filter.d" "INS\matrix_manipulation.d" "Sensors\ADXL345.d" "Sensors\GPS.d" "Sensors\HMC5883.d" "Sensors\ITG3200.d" "Sensors\MPL115A2.d" "board\DS2401.d" "board\SD_card.d" "board\board.d" "board\pinmux.d" "common\button_if.d" "common\gpio_if.d" "common\i2c_if.d" "common\i2s_if.d" "common\network_common.d" "common\network_if.d" "common\startup_ccs.d" "common\timer_if.d" "common\uart_if.d" "common\utils_if.d" "common\wdt_if.d" "interfaces\diskio.d" "interfaces\terninal.d" 
-	-$(RM) "infrastructure.obj" "main.obj" "INS\INS.obj" "INS\kalman_filter.obj" "INS\matrix_manipulation.obj" "Sensors\ADXL345.obj" "Sensors\GPS.obj" "Sensors\HMC5883.obj" "Sensors\ITG3200.obj" "Sensors\MPL115A2.obj" "board\DS2401.obj" "board\SD_card.obj" "board\board.obj" "board\pinmux.obj" "common\button_if.obj" "common\gpio_if.obj" "common\i2c_if.obj" "common\i2s_if.obj" "common\network_common.obj" "common\network_if.obj" "common\startup_ccs.obj" "common\timer_if.obj" "common\uart_if.obj" "common\utils_if.obj" "common\wdt_if.obj" "interfaces\diskio.obj" "interfaces\terninal.obj" 
+	-$(RM) "infrastructure.d" "main.d" "INS\INS.d" "INS\kalman_filter.d" "INS\matrix_manipulation.d" "Sensors\ADXL345.d" "Sensors\GPS.d" "Sensors\HMC5883.d" "Sensors\ITG3200.d" "Sensors\MPL115A2.d" "board\DS2401.d" "board\SD_card.d" "board\board.d" "board\pinmux.d" "common\button_if.d" "common\gpio_if.d" "common\i2c_if.d" "common\i2s_if.d" "common\network_common.d" "common\network_if.d" "common\startup_ccs.d" "common\timer_if.d" "common\uart_if.d" "common\utils_if.d" "common\wdt_if.d" "interfaces\diskio.d" "interfaces\local_i2c_if.d" "interfaces\local_uart_if.d" "interfaces\terninal.d" 
+	-$(RM) "infrastructure.obj" "main.obj" "INS\INS.obj" "INS\kalman_filter.obj" "INS\matrix_manipulation.obj" "Sensors\ADXL345.obj" "Sensors\GPS.obj" "Sensors\HMC5883.obj" "Sensors\ITG3200.obj" "Sensors\MPL115A2.obj" "board\DS2401.obj" "board\SD_card.obj" "board\board.obj" "board\pinmux.obj" "common\button_if.obj" "common\gpio_if.obj" "common\i2c_if.obj" "common\i2s_if.obj" "common\network_common.obj" "common\network_if.obj" "common\startup_ccs.obj" "common\timer_if.obj" "common\uart_if.obj" "common\utils_if.obj" "common\wdt_if.obj" "interfaces\diskio.obj" "interfaces\local_i2c_if.obj" "interfaces\local_uart_if.obj" "interfaces\terninal.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

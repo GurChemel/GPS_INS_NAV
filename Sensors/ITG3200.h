@@ -55,9 +55,9 @@ typedef struct {
 	double Wr;
 	double Wp;
 	double Wy;
-} Gyr_local_data;
+} Gyr_local_data_str;
 
-int ITG3200_read_gyrdata(char addr, Gyr_local_data* gyr_data);
+int ITG3200_read_gyrdata(char addr, Gyr_local_data_str* gyr_data);
 int init_ITG3200(char addr);
 
 #endif /* ITG3200_H_ */

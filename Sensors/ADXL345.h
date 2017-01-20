@@ -14,10 +14,9 @@ typedef struct {
 	double Ax;
 	double Ay;
 	double Az;
-}Acc_local_data;
+}Acc_local_data_str;
 
 int init_ADXL345(char addr);
-int ADXL345_read_accdata(char addr,  Acc_local_data* acc_data);
-
+int ADXL345_read_accdata(char addr,  Acc_local_data_str* acc_data);
 
 #endif /* ADXL345_H_ */

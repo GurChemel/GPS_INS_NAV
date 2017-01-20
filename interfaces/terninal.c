@@ -34,4 +34,3 @@ void DisplayBanner(char * AppName)
 	UART_PRINT("\n\rREADY...\n\r");
 }
 
-
