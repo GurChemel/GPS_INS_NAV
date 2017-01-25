@@ -55,7 +55,7 @@ int init_ITG3200(char addr)
 	}
 
 	Timer_IF_Init(PRCM_TIMERA2,TIMERA2_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,0);
-	Timer_IF_Start(TIMERA1_BASE,TIMER_A,0);
+	Timer_IF_Start(TIMERA2_BASE,TIMER_A,0);
 
 	return 0;
 }

@@ -16,9 +16,9 @@
 
 #include "board.h"
 
-#if defined(ccs) || defined(gcc)
+//#if defined(ccs) || defined(gcc)				// TODO: FIX!
 extern void (* const g_pfnVectors[])(void);
-#endif
+//#endif
 #if defined(ewarm)
 extern uVectorEntry __vector_table;
 #endif
@@ -34,7 +34,7 @@ extern uVectorEntry __vector_table;
 //*****************************************************************************
 void BoardInit(){
 
-	//IntVTableBaseSet((unsigned long)&g_pfnVectors[0]); //TODO: resolve this issue
+	IntVTableBaseSet((unsigned long)&g_pfnVectors[0]); //TODO: resolve this issue
 
 	IntMasterEnable();
 	IntEnable(FAULT_SYSTICK);

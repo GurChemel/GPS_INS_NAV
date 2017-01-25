@@ -38,6 +38,9 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	get_acc_data(&acc_data);
 	mag_input_data_str mag_data;			//	mag_data.Hx , mag_data.Hy , mag_data.Hz
 	get_mag_data(&mag_data);
+	while (DEBUG_MODE){
+		DEBUG_PRINT("Magnetometer (Hx,Hy,Hz): (%f,%f,%f). \n\r",mag_data.Hx,mag_data.Hy,mag_data.Hz);
+	}
 
 	// Algorithm used by Rafael Taub.
 	double phi = atan2(acc_data.Ay, acc_data.Az);
@@ -114,18 +117,15 @@ void INS_calc(system_state_str* systemState)
 
 	// Get acceleration in RPY and convert them to ENU.
 	acc_input_data_str acc_data;			//	acc_data.Ax , acc_data.Ay , acc_data.Az , acc_data.time
-	if (DEBUG_MODE){
-		DEBUG_PRINT("Get Accelerometer data...\n\r");
-	}
 	get_acc_data(&acc_data);
 	if (DEBUG_MODE){
 		DEBUG_PRINT("Accelerometer (Ax,Ay,Az,dt): (%f,%f,%f,%f). \n\r",acc_data.Ax,acc_data.Ay,acc_data.Az,acc_data.time);
 	}
 	double acc_dt = acc_data.time;
 	double rpy_accel[3];
-	rpy_accel[X_pos]=acc_data.Ax;
-	rpy_accel[Y_pos]=acc_data.Ay;
-	rpy_accel[Z_pos]=acc_data.Az;
+	rpy_accel[X_pos]=G_VALUE*acc_data.Ax;
+	rpy_accel[Y_pos]=G_VALUE*acc_data.Ay;
+	rpy_accel[Z_pos]=G_VALUE*acc_data.Az;
 	double enu_accel[3];
 	mat_dot_vec(rpy_to_enu_mat,rpy_accel,enu_accel);
 	enu_accel[Z_pos]=enu_accel[Z_pos]+G_VALUE;	// Compensate on earth's Gravitational force on the Up axis.
@@ -140,11 +140,8 @@ void INS_calc(system_state_str* systemState)
 
 	// Get velocity in Roll Pitch Yaw and calculate new values.
 	gyr_input_data_str gyr_data;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
-	if (DEBUG_MODE){
-		DEBUG_PRINT("Get Gyroscope data...\n\r");
-	}
 	get_gyr_data(&gyr_data);
-	if (DEBUG_MODE){
+	if (1){
 		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr_data.time);
 	}
 	double gyr_dt= gyr_data.time;

@@ -34,16 +34,17 @@ void init_board_and_sensors(){
 	BoardInit();
 	PinMuxConfig();
 
+	//console printing
+	InitTerm();
+	ClearTerm();
+	DEBUG_PRINT("\n\r\t\t Welcome to the Matrix.. \n\r");
+
 	//interfaces
 	init_uart();
 	init_i2c();
 	init_SD_card();
 	SD_write_file("hello.txt", "my name is", strlen("my name is"), SD_CREATE_AND_DELETE);
 	init_ds2401();
-
-	//console printing
-	InitTerm();
-	ClearTerm();
 
 	//sensors
 	int status = init_gps();
@@ -66,8 +67,8 @@ void get_mag_data(mag_input_data_str* mag_query){
 
 void copy_and_convert_mag_data_2_algorithm(mag_input_data_str* mag_query, Mag_local_data_str mag_data ){
 	mag_query->Hx = (double)mag_data.Hx; //TODO: implement this in a more elegant way
-	mag_query->Hx = (double)mag_data.Hy;
-	mag_query->Hx = (double)mag_data.Hz;
+	mag_query->Hy = (double)mag_data.Hy;
+	mag_query->Hz = (double)mag_data.Hz;
 }
 
 /******************************************************/
@@ -138,5 +139,5 @@ void update_gyr_timer (gyr_input_data_str* gyr_query){
 	Timer_IF_Stop(TIMERA2_BASE,TIMER_A); //not sure if needed
 	gyr_query->time =  CLOCK_PERIOD_USEC*(Timer_IF_GetCount(TIMERA2_BASE,TIMER_A));
 	Timer_IF_Init(PRCM_TIMERA2,TIMERA2_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,0);
-	Timer_IF_Start(TIMERA1_BASE,TIMER_A,0);
+	Timer_IF_Start(TIMERA2_BASE,TIMER_A,0);
 }

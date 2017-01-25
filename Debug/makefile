@@ -168,10 +168,10 @@ EXE_OUTPUTS__QUOTED += \
 "GPS-INS-NAV.out" \
 
 BIN_OUTPUTS += \
-GPS-INS-NAV.hex \
+GPS-INS-NAV.bin \
 
 BIN_OUTPUTS__QUOTED += \
-"GPS-INS-NAV.hex" \
+"GPS-INS-NAV.bin" \
 
 
 # All Target
@@ -181,15 +181,17 @@ all: GPS-INS-NAV.out
 GPS-INS-NAV.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib -me -g --define=cc3200 --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"GPS-INS-NAV.map" --stack_size=0x512 --heap_size=0x0 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/Users/Samsung/Desktop/project a/workspace/sdhost_fatfs" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="GPS-INS-NAV_linkInfo.xml" --rom_model -o "GPS-INS-NAV.out" $(ORDERED_OBJS)
+	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=vfplib -me -g --define=cc3200 --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"GPS-INS-NAV.map" --stack_size=0x512 --heap_size=0x8000 -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"C:/Project A/workspace/sdhost_fatfs" -i"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --warn_sections --diag_wrap=off --display_error_number --xml_link_info="GPS-INS-NAV_linkInfo.xml" --rom_model -o "GPS-INS-NAV.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	@$(MAKE) --no-print-directory post-build
 
-GPS-INS-NAV.hex: $(EXE_OUTPUTS)
+GPS-INS-NAV.bin: $(EXE_OUTPUTS)
 	@echo 'Invoking: ARM Hex Utility'
-	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex"  -o "GPS-INS-NAV.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex"  -o "GPS-INS-NAV.bin" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
+	@$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
@@ -199,8 +201,12 @@ clean:
 	-@echo 'Finished clean'
 	-@echo ' '
 
+post-build:
+	-"C:/TI/ccsv6/utils/tiobj2bin/tiobj2bin" "GPS-INS-NAV.out" "GPS-INS-NAV.bin" "C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armofd" "C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex" "C:/TI/ccsv6/utils/tiobj2bin/mkhex4bin"
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets
 

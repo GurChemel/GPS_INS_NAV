@@ -34,7 +34,7 @@ int main(void)
 	}
 	INS_init(&systemState, local_ref_in_ECEF, enu_to_ecef_mat);
 
-	if (DEBUG_MODE){
+	if (1){
 		DEBUG_PRINT("\n\rSystem Initialized:\n\r");
 		DEBUG_PRINT("\t Local Reference (x,y,z) in ECEF: (%f, %f, %f).\n\r",(local_ref_in_ECEF[X_pos]),(local_ref_in_ECEF[Y_pos]),(local_ref_in_ECEF[Z_pos]));
 		DEBUG_PRINT("\t System State (x,y,z) in ENU: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
