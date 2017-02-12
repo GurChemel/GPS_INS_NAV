@@ -74,17 +74,17 @@ int ITG3200_read_gyrdata(char addr, Gyr_local_data_str* gyr_data)
 	if(I2C_IF_Read(addr, rdata, 6)<0)			return -2;
 	while(I2CMasterBusy(I2CA0_BASE)){}
 
-	Xdata = (int)rdata[X_POS_H];
+	Xdata = (int)rdata[GYRO_X_POS_H];
 	Xdata <<=I2C_REG_SIZE;
-	Xdata += (int)rdata[X_POS_L];
+	Xdata += (int)rdata[GYRO_X_POS_L];
 
-	Ydata = (int)rdata[Y_POS_H];
+	Ydata = (int)rdata[GYRO_Y_POS_H];
 	Ydata <<=I2C_REG_SIZE;
-	Ydata += (int)rdata[Y_POS_L];
+	Ydata += (int)rdata[GYRO_Y_POS_L];
 
-	Zdata = (int)rdata[Z_POS_H];
+	Zdata = (int)rdata[GYRO_Z_POS_H];
 	Zdata <<=I2C_REG_SIZE;
-	Zdata += (int)rdata[Z_POS_L];
+	Zdata += (int)rdata[GYRO_Z_POS_L];
 
 	gyr_data->Wr = Xdata;
 	gyr_data->Wp = Ydata;

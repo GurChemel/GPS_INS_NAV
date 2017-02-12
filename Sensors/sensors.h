@@ -31,6 +31,13 @@
 #define Z_POS_L 0x4
 #define Z_POS_H 0x5
 
+#define GYRO_X_POS_H 0x0
+#define GYRO_X_POS_L 0x1
+#define GYRO_Y_POS_H 0x2
+#define GYRO_Y_POS_L 0x3
+#define GYRO_Z_POS_H 0x4
+#define GYRO_Z_POS_L 0x5
+
 #define I2C_REG_SIZE 0x8
 
 #endif /* SENSORS_SENSORS_H_ */

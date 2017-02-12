@@ -141,7 +141,7 @@ void INS_calc(system_state_str* systemState)
 	// Get velocity in Roll Pitch Yaw and calculate new values.
 	gyr_input_data_str gyr_data;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
 	get_gyr_data(&gyr_data);
-	if (1){
+	if (DEBUG_MODE){
 		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr_data.time);
 	}
 	double gyr_dt= gyr_data.time;
