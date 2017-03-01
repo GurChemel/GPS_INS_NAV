@@ -52,7 +52,7 @@ int disable_ubx_periodic(){
 										 TIM_MSG_CLASS, TIM_SVIN_ID, TIM_MSG_CLASS, TIM_TM2_ID, TIM_MSG_CLASS, TIM_TP_ID, TIM_MSG_CLASS, TIM_VRFY_ID};
 	int i, status;
 	char* disable_msg;
-	for (i=0; i<(MSG_TO_DIS*2); i+2){
+	for (i=0; i<(MSG_TO_DIS*2); i+=2){
 		char disable_payload [CFG_MSG_LEN] = {msg_to_disable[i],msg_to_disable[i+1],IDLE};
 		disable_msg = build_gps_ubx_msg(CFG_MSG_CLASS, CFG_MSG_ID, CFG_MSG_LEN, disable_payload);
 		status = send_uart_message(disable_msg, (CFG_PRT_LEN+TOT_HDR_LEN));
@@ -68,7 +68,7 @@ int enable_ubx_periodic(){
 	char msg_to_enable[MSG_TO_EN*2] = {NAV_MSG_CLASS, NAV_POSECEF_ID, NAV_MSG_CLASS, NAV_STATUS_ID};
 	int i, status;
 	char* enable_msg;
-	for (i=0; i < (MSG_TO_EN*2); i+2){
+	for (i=0; i < (MSG_TO_EN*2); i+=2){
 		char enable_payload[CFG_MSG_LEN] = {msg_to_enable[i],msg_to_enable[i+1], MSG_RATE};
 		enable_msg = build_gps_ubx_msg(CFG_MSG_CLASS, CFG_MSG_ID, CFG_MSG_LEN, enable_payload);
 		status = send_uart_message(enable_msg, (CFG_PRT_LEN+TOT_HDR_LEN));

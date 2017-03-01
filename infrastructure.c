@@ -28,6 +28,7 @@
 #include "interfaces/interfaces.h"
 #include "includes/infrastructure.h"
 
+#define MAX_COUNT_USEC 53687091.2
 
 void init_board_and_sensors(){
 	//board and chip
@@ -50,7 +51,8 @@ void init_board_and_sensors(){
 	int status = init_gps();
 	if (!status) UART_PRINT("failed to initialize gps reason: %d", status);
 	init_HMC5883(MAG_ADDR, true);
-	if(init_ADXL345(ACC_ADDR)<0){while(1){UART_PRINT("!!! acc I2c Error\n\r");}}
+	status=init_ADXL345(ACC_ADDR);
+	if(status<0){while(1){UART_PRINT("!!! acc I2c Error. Status: %d\n\r",status);}}
 	if(init_ITG3200(GYR_ADDR)<0){while(1){UART_PRINT("!!! gyr I2c Error\n\r");}}
 	init_MPL115A2();
 
@@ -130,14 +132,14 @@ void copy_and_convert_gps_data_2_algorithm(gps_input_data_str* sw_data, gps_loca
 
 void update_acc_timer (acc_input_data_str* acc_query){
 	Timer_IF_Stop(TIMERA1_BASE,TIMER_A); //not sure if needed
-	acc_query->time = CLOCK_PERIOD_USEC*(Timer_IF_GetCount(TIMERA1_BASE,TIMER_A)); //in uSec
-	Timer_IF_Init(PRCM_TIMERA1,TIMERA1_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,0);
-	Timer_IF_Start(TIMERA1_BASE,TIMER_A,0);
+	acc_query->time = MAX_COUNT_USEC-CLOCK_PERIOD_USEC*(Timer_IF_GetCount(TIMERA1_BASE,TIMER_A)); //in uSec
+	Timer_IF_Init(PRCM_TIMERA1,TIMERA1_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,1);
+	Timer_IF_Start(TIMERA1_BASE,TIMER_A,100);
 }
 
 void update_gyr_timer (gyr_input_data_str* gyr_query){
 	Timer_IF_Stop(TIMERA2_BASE,TIMER_A); //not sure if needed
-	gyr_query->time =  CLOCK_PERIOD_USEC*(Timer_IF_GetCount(TIMERA2_BASE,TIMER_A));
-	Timer_IF_Init(PRCM_TIMERA2,TIMERA2_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,0);
-	Timer_IF_Start(TIMERA2_BASE,TIMER_A,0);
+	gyr_query->time =  MAX_COUNT_USEC-CLOCK_PERIOD_USEC*(Timer_IF_GetCount(TIMERA2_BASE,TIMER_A));
+	Timer_IF_Init(PRCM_TIMERA2,TIMERA2_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,1);
+	Timer_IF_Start(TIMERA2_BASE,TIMER_A,100);
 }
