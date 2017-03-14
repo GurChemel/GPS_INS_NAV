@@ -39,22 +39,36 @@ void init_board_and_sensors(){
 	InitTerm();
 	ClearTerm();
 	DEBUG_PRINT("\n\r\t\t Welcome to the Matrix.. \n\r");
-
+	reset_global_int();
 	//interfaces
+	//DEBUG_PRINT("\n\r\t\t entering uart init \n\r");
 	init_uart();
+	//DEBUG_PRINT("\n\r\t\t done uart. entering i2c init \n\r");
 	init_i2c();
+	//DEBUG_PRINT("\n\r\t\t done i2c. entering sd init \n\r");
 	init_SD_card();
+	//DEBUG_PRINT("\n\r\t\t done sd init. entering sd write \n\r");
 	SD_write_file("hello.txt", "my name is", strlen("my name is"), SD_CREATE_AND_DELETE);
+	//DEBUG_PRINT("\n\r\t\t done sd writing. entering ds2401 \n\r");
 	init_ds2401();
+	//DEBUG_PRINT("\n\r\t\t done all init \n\r");
 
 	//sensors
+	DEBUG_PRINT("\n\r\t\t entering gps init  \n\r");
 	int status = init_gps();
-	if (!status) UART_PRINT("failed to initialize gps reason: %d", status);
+	if (status<0) {
+		UART_PRINT("failed to initialize gps reason: %d\n\r", status);
+		while (1){}
+	}
+	else DEBUG_PRINT("\n\r\t\t done init gps entering init mag \n\r");
 	init_HMC5883(MAG_ADDR, true);
+	DEBUG_PRINT("\n\r\t\t done init mag entering init acc \n\r");
 	status=init_ADXL345(ACC_ADDR);
 	if(status<0){while(1){UART_PRINT("!!! acc I2c Error. Status: %d\n\r",status);}}
+	else {DEBUG_PRINT("\n\r\t\t done init acc entering init gyr \n\r");}
 	if(init_ITG3200(GYR_ADDR)<0){while(1){UART_PRINT("!!! gyr I2c Error\n\r");}}
-	init_MPL115A2();
+	else {DEBUG_PRINT("\n\r\t\t done init gyr done all sensors init \n\r");}
+	//init_MPL115A2();
 
 }
 
@@ -110,11 +124,24 @@ void copy_and_convert_gyr_data_2_algorithm(gyr_input_data_str* gyr_query, Gyr_lo
 /****************************************************/
 /// this function returns SUCCESS if new data available and FAILURE if no new data available
 int get_gps_data(gps_input_data_str* gps_input){
-	if (new_nav_msg == false) return FAILED;
-	gps_local_data_str gps_data;
-	int status = parse_ubx_nav_msg (&gps_data, nav_msg);
-	if (!status) UART_PRINT("gps data corrupted");
-	copy_and_convert_gps_data_2_algorithm(gps_input,gps_data);
+	if (new_gps_msg== NEW) parse_recieved_msg();
+	else {
+		int status;
+		if (!NMEA){
+			gps_local_data_str gps_data;
+			if (new_nav_msg == false) return FAILED;
+			status = parse_ubx_nav_msg (&gps_data, nav_posecef_msg);
+			if (!status) UART_PRINT("gps data corrupted");
+			copy_and_convert_gps_data_2_algorithm(gps_input,gps_data);
+			new_nav_msg= OLD;
+		}else{
+			gps_local_data_NMEA_str gps_data;
+			status = get_lon_lat(&gps_data);
+			if (!status) UART_PRINT("gps data corrupted");
+			copy_and_convert_gps_data_2_algorithm_NMEA(gps_input,gps_data);
+			new_gps_msg = OLD;
+		}
+	}
 	return PASSED;
 }
 
@@ -123,6 +150,10 @@ void copy_and_convert_gps_data_2_algorithm(gps_input_data_str* sw_data, gps_loca
 	sw_data->Y   = (double)hw_data.Y/100;
 	sw_data->Z 	 = (double)hw_data.Z/100;
 	sw_data->Acc = (double)hw_data.Acc/100;
+}
+
+void copy_and_convert_gps_data_2_algorithm_NMEA(gps_input_data_str* sw_data, gps_local_data_NMEA_str hw_data){
+//TBI
 }
 
 /******************************************************/

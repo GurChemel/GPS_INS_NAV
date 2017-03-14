@@ -5,18 +5,59 @@
  *      Author: Rafi
  */
 #include "sensors.h"
+#include "math.h"
 #include "../interfaces/local_uart_if.h"
+#include "../includes/infrastructure.h"
 /****************************************************************************************************/
 int init_gps (){
+	int i;
+	boot_time = ON;
+	GPS_off();
+	for(i=0;i<100000;i++){}
 	GPS_on();
-	init_uart();
-	int status = cfg_gps_uart_and_protocol();
-	if(!status) return CFG_GPS_FAIL;
-	status = disable_ubx_periodic();
-	if(!status) return DIS_UBX_P;
-	status = enable_ubx_periodic();
-	if(!status) return EN_UBX_P;
+	DEBUG_PRINT("\n\r\t\t gps on \n\r");
+	//init_uart();
+	if(!NMEA){
+		int status = cfg_gps_uart_and_protocol();
+		//while(1){}
+		if(!status) return CFG_GPS_FAIL;
+		DEBUG_PRINT("\n\r\t\t cfg_gps_uart_and_protocol \n\r");
+		status = disable_ubx_periodic();
+		if(!status) return DIS_UBX_P;
+		status = enable_ubx_periodic();
+		if(!status) return EN_UBX_P;
+		status = get_fixed_pos();
+		if(!status) return FIX_NOT_AQUIRED;
+		boot_time=OFF;
+	}
+	else{
+		//cfg_NMEA_if();
+		get_fixed_pos();
+	}
 	return GOOD_OP;
+}
+/****************************************************************************************************/
+int get_fixed_pos(){
+	int fixed_pos = NO_FIX;
+	reset_global_int();
+	if (!NMEA){
+		char* status_poll_msg = build_gps_ubx_msg(NAV_MSG_CLASS, NAV_STATUS_ID, POLL_PAYLOAD_ANY_LEN, NULL);
+		while(fixed_pos == NO_FIX){
+				send_uart_message(status_poll_msg, POLL_MSG_TOT_LEN);
+				while (new_gps_msg == 0){}
+				parse_recieved_msg();
+				if (new_fix_msg && (nav_status_msg[PAYLOAD_START_POS+NAV_STATUS_FLAGS] & FIX)){
+					fixed_pos = FIX;
+					new_fix_msg = OLD;
+					DEBUG_PRINT("\n\r\t\t Got Fixed! \n\r");
+					free (status_poll_msg);
+				}
+		}
+	}else{
+		while(!fixOk){}
+		fixed_pos=FIX;
+	}
+	return fixed_pos;
 }
 /****************************************************************************************************/
 void GPS_on(void){
@@ -32,13 +73,116 @@ int cfg_gps_uart_and_protocol(){
 										 PARITY_BYTE, IDLE, IDLE, BAUD_RATE0, BAUD_RATE1, BAUD_RATE2,
 										 BAUD_RATE3, IN_PROTO, IDLE, OUT_PROTO, IDLE, IDLE, IDLE, IDLE,
 										 IDLE};
+	print_msg(msg_prt_payload,CFG_PRT_LEN);
 	char* msg =build_gps_ubx_msg(CFG_MSG_CLASS, CFG_PRT_ID, CFG_PRT_LEN, msg_prt_payload);
-	int status;
-	status =1;
-	//send_uart_message(msg, CFG_PRT_LEN);
-	//status = verify_message(); //ack in uart
+	DEBUG_PRINT("\n\r\t\t uart config message: \n\r");
+	print_msg(msg, CFG_PRT_LEN+TOT_HDR_LEN);
+	int status = send_uart_message(msg, CFG_PRT_LEN+TOT_HDR_LEN);
+	if (status == BAD_OP) DEBUG_PRINT("\n\r\t\t failed send cfg uart msg \n\r");
+	//status = verify_message(CFG_MSG_CLASS,CFG_PRT_ID); //ack in uart
 	free(msg);
 	return status;
+}
+/****************************************************************************************************/
+void print_msg (char* msg, int msg_len){
+	int i;
+	DEBUG_PRINT("\n\r message: ");
+	if (!NMEA){
+		DEBUG_PRINT(" 0x");
+		for (i=0; i< msg_len; i++) DEBUG_PRINT("%x%x", msg[i]>>4, msg[i]&(0xf));
+	}
+	else for (i=0; i< msg_len; i++) DEBUG_PRINT("%c", msg[i]);
+	//DEBUG_PRINT("\n\r");
+}
+/****************************************************************************************************/
+void build_NMEA_cfg_msg(char* msg, int msg_id){
+	//char X,Y,Z;
+	char cr = 0xd, lf = 0xa;
+	char CK_A=0, CK_B=0;
+	char temp_msg[PUBX_40_FL+1]={0};// = "$PUBX,40,DTM,0,0,0,0,0,0*000";
+	strcpy(temp_msg,"$PUBX,40,XYZ,0,0,0,0,0,0*00");
+	//temp_msg[6]=40;
+	switch (msg_id){
+				case DTM:
+					copy_char_arr(temp_msg+9,"DTM",3);
+					//X='D';Y='T';Z='M';
+					break;
+				case GBS:
+					copy_char_arr(temp_msg+9, "GBS",3);
+					//X='G';Y='B';Z='S';
+					break;
+				case GGA:
+					copy_char_arr(temp_msg+9,"GGA",3);
+					////X='G';Y='G';Z='A';
+					break;
+				case GLL:
+					copy_char_arr(temp_msg+9, "GLL",3);
+					 //X='G';Y='L';Z='L';
+					 break;
+				case GPQ:
+					copy_char_arr(temp_msg+9, "GPQ",3);
+					 //X='G';Y='P';Z='Q';
+					 break;
+				case GRS:
+					copy_char_arr(temp_msg+9, "GRS",3);
+					 //X='G';Y='R';Z='S';
+					 break;
+				case GSA:
+					copy_char_arr(temp_msg+9, "GSA",3);
+					 //X='G';Y='S';Z='A';
+					 break;
+				case GST:
+					copy_char_arr(temp_msg+9, "GST",3);
+					 //X='G';Y='S';Z='T';
+					 break;
+				case GSV:
+					copy_char_arr(temp_msg+9, "GSV",3);
+					 //X='G';Y='S';Z='V';
+					 break;
+				case THS:
+					copy_char_arr(temp_msg+9, "THS",3);
+					 //X='T';Y='H';Z='S';
+					 break;
+				case TXT:
+					copy_char_arr(temp_msg+9, "TXT",3);
+					 //X='T';Y='X';Z='T';
+					 break;
+				case VTG:
+					copy_char_arr(temp_msg+9, "VTG",3);
+					 //X='V';Y='T';Z='G';
+					 break;
+				case ZDA:
+					copy_char_arr(temp_msg+9, "ZDA",3);
+					 //X='Z';Y='D';Z='A';
+					 break;
+				case RMC:
+					copy_char_arr(temp_msg+9, "RMC",3);
+					 //X='T';Y='H';Z='S';
+				default: break;
+			 }
+			 //temp_msg[X_POS]=X; temp_msg[Y_POS]=Y; temp_msg[Z_POS]=Z;
+			 calc_msg_checksum (&CK_A, &CK_B, temp_msg, PUBX_40_BDY_LEN);
+			 temp_msg[CK_POS_HIGH] = CK_A;
+			 temp_msg[CK_POS_LOW] = CK_B;
+			 temp_msg[PUBX_40_FL-2]=cr;
+			 temp_msg[PUBX_40_FL-1]=lf;
+			 copy_char_arr(msg,temp_msg , PUBX_40_FL);
+			 print_msg (msg, PUBX_40_FL);
+
+}
+/****************************************************************************************************/
+void cfg_NMEA_if (){
+	int msg_id;
+	//int i=0;
+	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
+	char msg[PUBX_40_FL]={0};
+	for (msg_id=DTM; msg_id<RMC; msg_id++){
+		 build_NMEA_cfg_msg(msg,msg_id);
+		 send_uart_message(msg, PUBX_40_FL);
+		}
+	//while (i<160000000){i++;}
+	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
+	//while(1){}
 }
 /****************************************************************************************************/
 int disable_ubx_periodic(){
@@ -55,6 +199,7 @@ int disable_ubx_periodic(){
 	for (i=0; i<(MSG_TO_DIS*2); i+=2){
 		char disable_payload [CFG_MSG_LEN] = {msg_to_disable[i],msg_to_disable[i+1],IDLE};
 		disable_msg = build_gps_ubx_msg(CFG_MSG_CLASS, CFG_MSG_ID, CFG_MSG_LEN, disable_payload);
+		print_msg(disable_msg, CFG_MSG_LEN+TOT_HDR_LEN);
 		status = send_uart_message(disable_msg, (CFG_PRT_LEN+TOT_HDR_LEN));
 		free(disable_msg);
 		if (BAD_OP == status) return BAD_OP;
@@ -71,48 +216,85 @@ int enable_ubx_periodic(){
 	for (i=0; i < (MSG_TO_EN*2); i+=2){
 		char enable_payload[CFG_MSG_LEN] = {msg_to_enable[i],msg_to_enable[i+1], MSG_RATE};
 		enable_msg = build_gps_ubx_msg(CFG_MSG_CLASS, CFG_MSG_ID, CFG_MSG_LEN, enable_payload);
+		print_msg(enable_msg, CFG_MSG_LEN+TOT_HDR_LEN);
 		status = send_uart_message(enable_msg, (CFG_PRT_LEN+TOT_HDR_LEN));
 		free(enable_msg);
 		if (BAD_OP == status) return BAD_OP;
-		//status = verify_message();
+		status = verify_message(CFG_MSG_CLASS,CFG_MSG_ID);
 		if (BAD_OP == status) return BAD_OP;
 	}
 	return GOOD_OP;
 }
 /****************************************************************************************************/
-char* build_gps_ubx_msg(char msg_class, char msg_id, int msg_len, char* payload){
-	char ck_a, ck_b;
-	int msg_tot_len	 = MSG_HDR_LEN + MSG_CLASS_LEN + MSG_ID_LEN+ MSG_LEN_IND + msg_len + MSG_CKS_LEN;
-	int msg_body_len = MSG_CLASS_LEN + MSG_ID_LEN+ MSG_LEN_IND + msg_len;
-	int ck_a_pos = msg_tot_len -2;
-	int ck_b_pos = msg_tot_len -1;
+char* build_gps_ubx_msg(unsigned char msg_class, unsigned char msg_id, int msg_len, char* payload){
+	char ck_a=0, ck_b=0;
+	int pos;
+	int msg_tot_len	     = TOT_HDR_LEN + msg_len;
+	int length_to_chksum = MSG_HDR_LEN + MSG_CLASS_LEN + MSG_ID_LEN+ MSG_LEN_IND + msg_len;
+	int ck_a_pos = msg_tot_len - 2;
+	int ck_b_pos = msg_tot_len - 1;
 	char msg_len_low  = msg_len;
 	char msg_len_high = msg_len >> BYTE;
-	char* msg_body = (char*)malloc(msg_body_len);
-	char temp_body[4] = {msg_class, msg_id, msg_len_low, msg_len_high};
-	memcpy(msg_body, temp_body, 4);
-	memcpy ((msg_body+4*sizeof(char)), payload, strlen(payload));
-	calc_msg_checksum (&ck_a, &ck_b, msg_body,msg_body_len);
-	free (msg_body);
 	char* msg = (char*)malloc(msg_tot_len);
-	char temp [6*BYTE] = {SYNC_CHAR1, SYNC_CHAR2, msg_class, msg_id, msg_len_low, msg_len_high};
-	memcpy(msg, temp, 6);
-	memcpy ((msg+6*sizeof(char)),payload,strlen(payload));
+	for (pos = 0; pos<PAYLOAD_START_POS ;pos++)
+		switch (pos){
+			case SYNC_CHAR1_POS:
+				msg[pos] = SYNC_CHAR1;
+				break;
+			case SYNC_CHAR2_POS:
+				msg[pos] = SYNC_CHAR2;
+				break;
+			case CLASS_POS:
+				msg[pos] = msg_class;
+				DEBUG_PRINT("\n\rmsg_class: 0x%x", msg[pos]);
+				break;
+			case ID_POS:
+				msg[pos] = msg_id;
+				DEBUG_PRINT("\n\r msg_ID: 0x%x", msg[pos]);
+				break;
+			case LEN_LOW_POS:
+				msg[pos] = make_ltl_end(msg_len_low); //TODO: check if this is the order that should take place and if should be inverted to little endian
+				DEBUG_PRINT("\n\r msg_len_low: 0x%x", msg[pos]);
+				break;
+			case LEN_HIGH_POS:
+				msg[pos] = make_ltl_end(msg_len_high) ;
+				DEBUG_PRINT("\n\r msg_len_high: 0x%x", msg[pos]);
+				break;
+			default: break;
+		}
+	if(payload != NULL) copy_char_arr (msg+sizeof(char)*PAYLOAD_START_POS, payload,msg_len);
+	calc_msg_checksum (&ck_a, &ck_b, msg ,length_to_chksum);
 	msg[ck_a_pos] =ck_a;
 	msg[ck_b_pos] =ck_b;
 	return msg;
 }
 /****************************************************************************************************/
+void copy_char_arr(char* dest,char* src ,int len) {
+	int i;
+	for (i=0;i<len;i++){
+		dest[i]=src[i];
+	}
+}
+/****************************************************************************************************/
 void calc_msg_checksum (char* CK_A, char* CK_B, char* msg_body, int msg_body_len){
 	int byte_num, bit_num;
 	char current_byte;
-	for(byte_num=0; byte_num<msg_body_len; byte_num++){
-		current_byte = *(msg_body+sizeof(char)*byte_num);
-		for (bit_num=0; bit_num<BYTE; bit_num++){
-			*CK_A = *CK_A + (current_byte & 0x1);
-			*CK_B = *CK_B + *CK_A;
-			 current_byte = current_byte << BIT;
+	if (!NMEA){
+		for(byte_num=CLASS_POS; byte_num<msg_body_len; byte_num++){
+			current_byte = *(msg_body+sizeof(char)*byte_num);
+			for (bit_num=0; bit_num<BYTE; bit_num++){
+				*CK_A = *CK_A + (current_byte & 0x1);
+				*CK_B = *CK_B + *CK_A;
+				 current_byte = current_byte >> BIT;
+			}
 		}
+	}
+	else {
+		*CK_A = msg_body[IDENTIFIER_START_POS];
+		for(byte_num = IDENTIFIER_START_POS+1; byte_num<=msg_body_len; byte_num++)
+			*CK_A = *CK_A ^ msg_body[byte_num];
+		*CK_B = (*CK_A & 0xf)<10 ? (*CK_A & 0xf) + 48 : (*CK_A & 0xf) + 55;//ascii value for int
+		*CK_A = (*CK_A >> 4) <10 ? (*CK_A >> 4)  + 48 : (*CK_A >> 4)  + 55;
 	}
 }
 /****************************************************************************************************/
@@ -134,24 +316,68 @@ int parse_ubx_nav_msg (gps_local_data_str* gps_data, char* data){
 }
 /****************************************************************************************************/
 int send_uart_message(char* msg, int length){
-	int byte_idx, status;
+	int byte_idx;
+	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
 	for (byte_idx=0; byte_idx< length; byte_idx++){
-		status = UARTCharPutNonBlocking(UARTA1_BASE, msg[byte_idx]);
-		if (!status) return BAD_OP;
+		//DEBUG_PRINT("\n\r\t\t byte num: %d  ",byte_idx);
+		//while (!UARTSpaceAvail(UARTA1_BASE)){}
+		UARTCharPut(UARTA1_BASE, msg[byte_idx]);
+		//DEBUG_PRINT(" - sent!");
 	}
+	DEBUG_PRINT("  - message sent!");
+	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
 	return GOOD_OP;
 }
 /****************************************************************************************************/
 int verify_message(char class, char id){//TODO: think with Gur if this can create bugs
 	int verify = BAD_OP;
-	if (new_ack_msg == 1){
-		//TODO: think: what if at this moment the ack havn't received yet?
-		verify = ((ack_msg[CLASS_ACK_POS] == class) ? ((ack_msg[CLASS_ACK_POS] == class) ? GOOD_OP : BAD_OP) : BAD_OP) ;
+	while (new_ack_msg == OLD){}
+	DEBUG_PRINT("\n\r new msg\n\r");
+	if (new_ack_msg == NEW){
+		print_msg(ack_msg, ACK_ACK_LEN+TOT_HDR_LEN);
+		verify = ((ack_msg[CLASS_ACK_POS] == class) ? ((ack_msg[ID_ACK_POS] == id) ? GOOD_OP : BAD_OP) : BAD_OP) ;
+		new_ack_msg = OLD;
 	}
 	return verify;
 }
 /****************************************************************************************************/
+char make_ltl_end(char word){
+	char temp =0xff;
+	int i;
+	for (i=1;i<=BYTE;i++){
+		temp = (temp << BIT) + (word&0x1);
+		word= (word >> BIT) ;
+	}
+	//DEBUG_PRINT("0x%x",temp);
+	return temp;
+}
 
+int get_lon_lat(gps_local_data_NMEA_str* gps_data) {
+	if (!fixOk) return BAD_DATA;
+	gps_data->lat_deg = ascii_2_num(&NMEA_msg[19],2);
+	gps_data->lat_min = ascii_2_num(&NMEA_msg[21],7);
+	gps_data->lon_deg = ascii_2_num(&NMEA_msg[32],3);
+	gps_data->lon_min = ascii_2_num(&NMEA_msg[35],7);
+	gps_data->POE = ((NMEA_msg[30]== 'S') ? SOUTH : (NMEA_msg[30]== 'N') ? NORTH : 0)
+				  & ((NMEA_msg[44]== 'W') ? WEST  : (NMEA_msg[44]== 'E') ? EAST  : 0);
+	gps_data->Acc = NULL;
+	DEBUG_PRINT("lat_deg: %d",gps_data->lat_deg);
+	DEBUG_PRINT("lat_min: %d",gps_data->lat_min);
+	DEBUG_PRINT("lon_deg: %d",gps_data->lon_deg);
+	DEBUG_PRINT("lon_min: %d",gps_data->lon_min);
+	DEBUG_PRINT("POE: 0x%x",gps_data->POE);
+	return GOOD_DATA;
+}
 
-
-
+double ascii_2_num (char* ascii, int length){
+	int i, before_dot=1;
+	double num=0;
+	for (i=0; i<length;i++){
+		if(ascii[i]=='.'){
+			before_dot =0;
+			continue;
+		}
+		num = before_dot ? num+(ascii[i]-48)*10 : num+((double)(ascii[i]-48))/pow(10,i);
+	}
+	return num;
+}

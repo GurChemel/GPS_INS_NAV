@@ -14,10 +14,11 @@
 /**************************************************************************/
 #define SYNC_CHAR1 		((unsigned char) 0xB5)
 #define SYNC_CHAR2 		((unsigned char) 0x62)
+
 #define MSG_HDR_LEN 	0x02
 #define MSG_CLASS_LEN 	0x01
 #define MSG_ID_LEN 		0x01
-#define MSG_LEN_IND 	((unsigned char) 0x02)
+#define MSG_LEN_IND     0x02
 #define MSG_CKS_LEN		0x02
 
 
@@ -25,8 +26,11 @@
 #define SYNC_CHAR2_POS     1
 #define CLASS_POS 		   2
 #define ID_POS 		 	   3
+#define LEN_LOW_POS	       4
+#define LEN_HIGH_POS	   5
 #define PAYLOAD_START_POS  6
-#define TOT_HDR_LEN        MSG_HDR_LEN+MSG_CLASS_LEN+MSG_ID_LEN+(int)MSG_LEN_IND+MSG_CKS_LEN
+#define TOT_HDR_LEN        MSG_HDR_LEN + MSG_CLASS_LEN + MSG_ID_LEN + MSG_LEN_IND + MSG_CKS_LEN
+#define POLL_MSG_TOT_LEN   TOT_HDR_LEN + (int)POLL_PAYLOAD_ANY_LEN
 
 /**************************************************************************/
 //classes defines
@@ -95,21 +99,23 @@
 /**************************************************************************/
 //Messages payload lengths
 /**************************************************************************/
-#define CFG_MSG_LEN 	((unsigned char) 3)
-#define CFG_PRT_LEN 	((unsigned char) 20)
-#define NAV_POSECEF_LEN ((unsigned char) 20)
-#define ACK_ACK_LEN 	((unsigned char) 2)
-#define ACK_NAK_LEN 	((unsigned char) 2)
+#define CFG_MSG_LEN 	     3
+#define CFG_PRT_LEN 	     20
+#define NAV_POSECEF_LEN      20
+#define ACK_ACK_LEN 	     2
+#define ACK_NAK_LEN 	     2
+#define NAV_STATUS_LEN       16
+#define POLL_PAYLOAD_ANY_LEN 0
 
 
 /**************************************************************************/
 //NAV-POSECEF payload structure
 /**************************************************************************/
-#define NAV_POSECEF_X   4
-#define NAV_POSECEF_Y   8
-#define NAV_POSECEF_Z   12
-#define NAV_POSECEF_ACC 16
-
+#define NAV_POSECEF_X    4
+#define NAV_POSECEF_Y    8
+#define NAV_POSECEF_Z    12
+#define NAV_POSECEF_ACC  16
+#define NAV_STATUS_FLAGS 5
 
 /**************************************************************************/
 //ACK message structure
@@ -126,9 +132,9 @@
 #define CHAR_LEN ((unsigned char) 3)
 #define PARITY   ((unsigned char) 4)
 #define STOP_BIT ((unsigned char) 0)
-
-#define CHAR_LEN_BYTE ((unsigned char) CHAR_LEN << 6)
-#define PARITY_BYTE ((unsigned char) (((STOP_BIT << 3 ) & PARITY) << 1))
+#define RESERVED1_CHARLEN  ((unsigned char) (1 << 4))
+#define CHAR_LEN_BYTE ((unsigned char)0xd0) //((unsigned char) CHAR_LEN << 6) & RESERVED1_CHARLEN
+#define PARITY_BYTE ((unsigned char)0x08)//((unsigned char) (((STOP_BIT << 3 ) & PARITY) << 1))
 
 #define IN_PROTO  ((unsigned char) 1)
 #define OUT_PROTO ((unsigned char) 1)
@@ -141,6 +147,36 @@
 
 #define MSG_RATE ((unsigned char) 1)
 /********************************************************/
+//NMEA defines
+/********************************************************/
+//char* temp_msg[PUBX_40_FL] = {'$','P','U','B','X',',','4','0',',',&X,&Y,&Z,',','0',','0,0,0,0,0*",&CK,&cr,&lf};
+#define IDENTIFIER_START_POS 1
+#define PUBX_40_BDY_LEN  23
+#define CK_POS 25
+#define PUBX_40_FL 29
+#define X_POS 9
+#define Y_POS 10
+#define Z_POS 11
+#define CK_POS_HIGH 25
+#define CK_POS_LOW 26
+enum {
+	DTM = 0,
+	GBS = 1,
+	GGA = 2,
+	GLL = 3,
+	GPQ = 4,
+	GRS = 5,
+	GSA = 6,
+	GST = 7,
+	GSV = 8,
+	THS = 9,
+	TXT = 10,
+	VTG = 11,
+	ZDA = 12,
+	RMC = 13,
+};
+
+/********************************************************/
 //general defines
 /********************************************************/
 #define IDLE ((unsigned char) 0)
@@ -149,15 +185,23 @@
 #define DIS_UBX_P -1
 #define EN_UBX_P  -2
 #define CFG_GPS_FAIL -3
-
+#define FIX_NOT_AQUIRED -4
+#define NO_FIX 0
+#define FIX 1
+#define NEW 1
+#define OLD 0
 #define BAD_DATA  0
 #define GOOD_DATA 1
 #define GOOD_OP 1
 #define BAD_OP 0
 
+#define NMEA 1
 #define EMPTY_BYTE 0
 #define BYTE 8
 #define BIT 1
+#define ON 1
+#define OFF 0
+
 
 typedef struct {
 	int X;
@@ -166,15 +210,41 @@ typedef struct {
 	int Acc;
 }gps_local_data_str;
 
+typedef struct {
+	double lat_deg;
+	double lat_min;
+	double lon_deg;
+	double lon_min;
+	double POE; // mask bit0 s, bit1 n. bit2: e, bit 3w.
+	int Acc;
+}gps_local_data_NMEA_str;
+
+
+enum{
+	SOUTH = 1,
+	NORTH = 2,
+	EAST  = 4,
+	WEST  = 8,
+};
+
+
 int init_gps ();
+int get_fixed_pos();
+void print_msg (char* msg, int msg_len);
 void GPS_on(void);
 void GPS_off(void);
 int cfg_gps_uart_and_protocol();
 int disable_ubx_periodic();
 int enable_ubx_periodic();
-char* build_gps_ubx_msg(char msg_class, char msg_id, int msg_len, char* payload);
+char* build_gps_ubx_msg(unsigned char msg_class,unsigned char msg_id, int msg_len, char* payload);
 void calc_msg_checksum (char* CK_A, char* CK_B, char* msg_body, int msg_body_len);
 int parse_ubx_nav_msg (gps_local_data_str* gps_data, char* data);
 int send_uart_message(char* msg, int length);
 int verify_message(char class, char id);
+char make_ltl_end(char word);
+void copy_char_arr(char* dest, char* src, int len);
+void cfg_NMEA_if ();
+void build_NMEA_cfg_msg(char* msg, int msg_id);
+int get_lon_lat(gps_local_data_NMEA_str* gps_data);
+double ascii_2_num (char* ascii, int length);
 #endif /* GPS_H_ */

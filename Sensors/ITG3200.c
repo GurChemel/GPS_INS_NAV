@@ -7,55 +7,54 @@
  */
 
 #include "sensors.h"
-
+//#include "../includes/infrastructure.h"
 int init_ITG3200(char addr)
 {
 	unsigned char data[2];
-	unsigned char* rdata;
+	unsigned char rdata[1];
 	int itg_ready =0;
 
+	//DEBUG_PRINT("\n\r\t\t sample rate \n\r");
 	// sample rate divider
 	data[ADDRESS] = SAMPLE_RATE_DIV_REG;
 	data[DATA] = SAMPLE_RATE_DIV_VALUE;
 	if(I2C_IF_Write(addr, data, 2, true)<0)	return -1;
 	while(I2CMasterBusy(I2CA0_BASE)){}
-
+	//DEBUG_PRINT("\n\r\t\t plpf \n\r");
 	// plpf and full scale
 	data[ADDRESS] = DLPF_FULL_SCALE_REG;
 	data[DATA] = DLPF_FULL_SCALE_VALUE;
 	if(I2C_IF_Write(addr, data, 2, true)<0)	return -1;
 	while(I2CMasterBusy(I2CA0_BASE)){}
-
+	//DEBUG_PRINT("\n\r\t\t interrupts \n\r");
 	// interrupts configuration
 	data[ADDRESS] = INTERRUPTS_CFG_REG;
 	data[DATA] = INTERRUPTS_CFG_VALUE;
 	if(I2C_IF_Write(addr, data, 2, true)<0)	return -1;
 	while(I2CMasterBusy(I2CA0_BASE)){}
-
+	//DEBUG_PRINT("\n\r\t\t power management \n\r");
 	// Power Management
 	data[ADDRESS] = POWER_MNG_REG ;
 	data[DATA] = POWER_MNG_VALUE;
 	if(I2C_IF_Write(addr, data, 2, true)<0)	return -1;
 	while(I2CMasterBusy(I2CA0_BASE)){}
+	//DEBUG_PRINT("\n\r\t\t pll rdy \n\r");
 
 	//read pll rdy interrupt status to make sure the gyro is ready (50ms)
 	data[ADDRESS] = INTERRUPTS_STATUS_REG;
 	while (!itg_ready){
-		if(I2C_IF_Write(addr, data, 1, false)<0) {
-			itg_ready =0;
-			continue;
-		}
+		if(I2C_IF_Write(addr, data, 1, false)<0)	return -1;
 		while(I2CMasterBusy(I2CA0_BASE)){}
-		if(I2C_IF_Read(addr, rdata, 1)<0) {
-			itg_ready =0;
-			continue;
-		}
+		//DEBUG_PRINT("\n\r\t\t read \n\r");
+		if(I2C_IF_Read(addr, rdata, 1)<0)			return -2;
 		while(I2CMasterBusy(I2CA0_BASE)){}
-		itg_ready =1;
+		//DEBUG_PRINT("\n\r\t\t rdata[0]=%d \n\r",rdata[0]);
+		itg_ready = (rdata[0] & 5);
 	}
 
-	Timer_IF_Init(PRCM_TIMERA2,TIMERA2_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,0);
-	Timer_IF_Start(TIMERA2_BASE,TIMER_A,0);
+	//DEBUG_PRINT("\n\r\t\t init gyr timers \n\r");
+	Timer_IF_Init(PRCM_TIMERA2,TIMERA2_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,1);
+	Timer_IF_Start(TIMERA2_BASE,TIMER_A,100);
 
 	return 0;
 }

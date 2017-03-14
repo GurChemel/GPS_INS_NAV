@@ -23,7 +23,7 @@ int main(void)
 {
 	// Initiating Board and Sensors.
 	init_board_and_sensors();
-
+	DEBUG_PRINT("\n\r\t\t done complete init \n\r");
 	// Set INS Parameters.
 	system_state_str systemState;
 	double local_ref_in_ECEF[DIM_SIZE];
@@ -59,16 +59,15 @@ int main(void)
 
 	while(1){
 		// Check for new GPS data.
-		int new_gps_flag= 0;//new_gps_point();
-		if (new_gps_flag){	// Activate Kalman filter.		TODO: Write new_gps_point function.
+		//int new_gps_flag= 0;//new_gps_point();
+		if (get_gps_data(&gps_data) == PASSED){	// Activate Kalman filter.		TODO: Write new_gps_point function.
 			if (DEBUG_MODE){
 				DEBUG_PRINT("\n\r\t New GPS data.\n\r");
 			}
-			get_gps_data(&gps_data);
-			position_diff_new[X_pos]=gps_data.X-ins_position_in_ECEF[X_pos];
-			position_diff_new[Y_pos]=gps_data.Y-ins_position_in_ECEF[Y_pos];
-			position_diff_new[Z_pos]=gps_data.Z-ins_position_in_ECEF[Z_pos];
-			kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
+				position_diff_new[X_pos]=gps_data.X-ins_position_in_ECEF[X_pos];
+				position_diff_new[Y_pos]=gps_data.Y-ins_position_in_ECEF[Y_pos];
+				position_diff_new[Z_pos]=gps_data.Z-ins_position_in_ECEF[Z_pos];
+				kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
 		}
 
 		// Calculate INS position.

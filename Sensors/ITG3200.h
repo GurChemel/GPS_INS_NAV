@@ -31,7 +31,7 @@
 #define INT_CFG_ACTL    (0x0 << 7)
 #define INT_CFG_OPEN    (0x0 << 6)
 #define INT_CFG_LATCH   (0x1 << 5)
-#define INT_CFG_ANYRD   (0x1 << 4)
+#define INT_CFG_ANYRD   (0x0 << 4)
 #define INT_CFG_ITG_RDY (0x1 << 2)
 #define INT_CFG_RAW_RDY  0x1
 
