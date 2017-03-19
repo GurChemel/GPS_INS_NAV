@@ -51,9 +51,9 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	double costheta = cos(theta);
 	double psi = atan2(mag_data.Hz*sinphi - mag_data.Hy*cosphi, mag_data.Hx*costheta + mag_data.Hy*sintheta*sinphi + mag_data.Hz*sintheta*cosphi);
 
-	systemState->Roll=phi*rad2deg;
-	systemState->Pitch=theta*rad2deg;
-	systemState->Yaw=psi*rad2deg;
+	systemState->Roll=phi*RAD2DEG;
+	systemState->Pitch=theta*RAD2DEG;
+	systemState->Yaw=psi*RAD2DEG;
 
 	// Average GPS_AVERAGE_LENGTH GPS data readings and save as local reference from ECEF zero to ENU zero (In ECEF coordinate).
 	gps_input_data_str gps_data;			//	gps_data.X	, gps_data.Y  , gps_data.Z
@@ -97,12 +97,12 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 void INS_calc(system_state_str* systemState)
 {
 	// Build RPYtoENU matrix according to Roll,Pitch,Yaw.
-	double sr = sin(deg2rad*systemState->Roll);
-	double cr = cos(deg2rad*systemState->Roll);
-	double sp = sin(deg2rad*systemState->Pitch);
-	double cp = cos(deg2rad*systemState->Pitch);
-	double sy = sin(deg2rad*systemState->Yaw);
-	double cy = cos(deg2rad*systemState->Yaw);
+	double sr = sin(DEG2RAD*systemState->Roll);
+	double cr = cos(DEG2RAD*systemState->Roll);
+	double sp = sin(DEG2RAD*systemState->Pitch);
+	double cp = cos(DEG2RAD*systemState->Pitch);
+	double sy = sin(DEG2RAD*systemState->Yaw);
+	double cy = cos(DEG2RAD*systemState->Yaw);
 
 	double rpy_to_enu_mat[3][3];
 	rpy_to_enu_mat[0][0]=sy*cp;

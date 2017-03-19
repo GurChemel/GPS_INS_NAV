@@ -15,10 +15,13 @@
 
 
 
-void init_i2c (){
+int init_i2c (){
+	I2C_IF_Close();
 	PRCMPeripheralReset(PRCM_I2CA0);
-	I2C_IF_Open(I2C_MASTER_MODE_STD);
+	int status = I2C_IF_Open(I2C_MASTER_MODE_STD);
 	I2CMasterIntClearEx(I2CA0_BASE, 0xFFF);
 	I2CMasterEnable(I2CA0_BASE);
+
+	return status;
 }
 

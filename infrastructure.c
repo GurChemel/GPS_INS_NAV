@@ -34,7 +34,7 @@ void init_board_and_sensors(){
 	//board and chip
 	BoardInit();
 	PinMuxConfig();
-
+	int status = 0;
 	//console printing
 	InitTerm();
 	ClearTerm();
@@ -43,33 +43,35 @@ void init_board_and_sensors(){
 	//interfaces
 	//DEBUG_PRINT("\n\r\t\t entering uart init \n\r");
 	init_uart();
-	//DEBUG_PRINT("\n\r\t\t done uart. entering i2c init \n\r");
-	init_i2c();
-	//DEBUG_PRINT("\n\r\t\t done i2c. entering sd init \n\r");
+	DEBUG_PRINT("\n\r\t\t done uart. entering i2c init \n\r");
+	status = init_i2c();
+	UART_PRINT("i2c init: %d\n\r", status);
+	DEBUG_PRINT("\n\r\t\t done i2c. entering sd init \n\r");
 	init_SD_card();
-	//DEBUG_PRINT("\n\r\t\t done sd init. entering sd write \n\r");
+	DEBUG_PRINT("\n\r\t\t done sd init. entering sd write \n\r");
 	SD_write_file("hello.txt", "my name is", strlen("my name is"), SD_CREATE_AND_DELETE);
 	//DEBUG_PRINT("\n\r\t\t done sd writing. entering ds2401 \n\r");
 	init_ds2401();
-	//DEBUG_PRINT("\n\r\t\t done all init \n\r");
+	DEBUG_PRINT("\n\r\t\t done all init \n\r");
 
 	//sensors
 	DEBUG_PRINT("\n\r\t\t entering gps init  \n\r");
-	int status = init_gps();
+	status = init_gps();
 	if (status<0) {
 		UART_PRINT("failed to initialize gps reason: %d\n\r", status);
 		while (1){}
 	}
 	else DEBUG_PRINT("\n\r\t\t done init gps entering init mag \n\r");
-	init_HMC5883(MAG_ADDR, true);
-	DEBUG_PRINT("\n\r\t\t done init mag entering init acc \n\r");
+	status=init_HMC5883(MAG_ADDR, true);
+	if(status<0){UART_PRINT("!!! mag I2c Error. Status: %d\n\r",status);}
+	else DEBUG_PRINT("\n\r\t\t done init mag entering init acc \n\r");
 	status=init_ADXL345(ACC_ADDR);
-	if(status<0){while(1){UART_PRINT("!!! acc I2c Error. Status: %d\n\r",status);}}
+	if(status<0){UART_PRINT("!!! acc I2c Error. Status: %d\n\r",status);}
 	else {DEBUG_PRINT("\n\r\t\t done init acc entering init gyr \n\r");}
-	if(init_ITG3200(GYR_ADDR)<0){while(1){UART_PRINT("!!! gyr I2c Error\n\r");}}
+	status=init_ITG3200(GYR_ADDR);
+	if(status<0){UART_PRINT("!!! gyr I2c Error. Status: %d\n\r",status);}
 	else {DEBUG_PRINT("\n\r\t\t done init gyr done all sensors init \n\r");}
 	//init_MPL115A2();
-
 }
 
 /******************************************************/
@@ -124,7 +126,20 @@ void copy_and_convert_gyr_data_2_algorithm(gyr_input_data_str* gyr_query, Gyr_lo
 /****************************************************/
 /// this function returns SUCCESS if new data available and FAILURE if no new data available
 int get_gps_data(gps_input_data_str* gps_input){
-	if (new_gps_msg== NEW) parse_recieved_msg();
+	if (new_gps_msg== OLD) return FAILED;
+	else {
+		gps_local_data_NMEA_str gps_data;
+		int status = get_lon_lat(&gps_data);
+		if (!status) UART_PRINT("gps data corrupted");
+		copy_and_convert_gps_data_2_algorithm_NMEA(gps_input,gps_data);
+		new_gps_msg = OLD;
+	}
+	return PASSED;
+}
+
+
+
+	/*if (new_gps_msg== NEW) parse_recieved_msg();
 	else {
 		int status;
 		if (!NMEA){
@@ -142,8 +157,8 @@ int get_gps_data(gps_input_data_str* gps_input){
 			new_gps_msg = OLD;
 		}
 	}
-	return PASSED;
-}
+	return PASSED;*/
+
 
 void copy_and_convert_gps_data_2_algorithm(gps_input_data_str* sw_data, gps_local_data_str hw_data){
 	sw_data->X   = (double)hw_data.X/100;
@@ -153,7 +168,14 @@ void copy_and_convert_gps_data_2_algorithm(gps_input_data_str* sw_data, gps_loca
 }
 
 void copy_and_convert_gps_data_2_algorithm_NMEA(gps_input_data_str* sw_data, gps_local_data_NMEA_str hw_data){
-//TBI
+    double clat = cos(hw_data.lat * DEGREES_TO_RADIANS);
+    double slat = sin(hw_data.lat * DEGREES_TO_RADIANS);
+    double clon = cos(hw_data.lon * DEGREES_TO_RADIANS);
+    double slon = sin(hw_data.lon * DEGREES_TO_RADIANS);
+    double N = WGS84_A / sqrt(1.0 - WGS84_E * WGS84_E * slat * slat);
+    sw_data->X = (N + hw_data.alt) * clat * clon;
+    sw_data->Y = (N + hw_data.alt) * clat * slon;
+    sw_data->Z = (N * (1.0 - WGS84_E * WGS84_E) + hw_data.alt) * slat;
 }
 
 /******************************************************/

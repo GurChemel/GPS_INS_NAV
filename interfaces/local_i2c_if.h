@@ -8,7 +8,7 @@
 #ifndef INTERFACES_LOCAL_I2C_IF_H_
 #define INTERFACES_LOCAL_I2C_IF_H_
 
-void init_i2c ();
+int init_i2c ();
 
 
 

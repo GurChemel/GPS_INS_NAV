@@ -211,12 +211,9 @@ typedef struct {
 }gps_local_data_str;
 
 typedef struct {
-	double lat_deg;
-	double lat_min;
-	double lon_deg;
-	double lon_min;
-	double POE; // mask bit0 s, bit1 n. bit2: e, bit 3w.
-	int Acc;
+	double lat;
+	double lon;
+	double alt;
 }gps_local_data_NMEA_str;
 
 

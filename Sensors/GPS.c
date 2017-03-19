@@ -16,7 +16,7 @@ int init_gps (){
 	for(i=0;i<100000;i++){}
 	GPS_on();
 	DEBUG_PRINT("\n\r\t\t gps on \n\r");
-	//init_uart();
+	init_uart();
 	if(!NMEA){
 		int status = cfg_gps_uart_and_protocol();
 		//while(1){}
@@ -173,14 +173,14 @@ void build_NMEA_cfg_msg(char* msg, int msg_id){
 /****************************************************************************************************/
 void cfg_NMEA_if (){
 	int msg_id;
-	//int i=0;
+	int i=0;
 	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
 	char msg[PUBX_40_FL]={0};
 	for (msg_id=DTM; msg_id<RMC; msg_id++){
 		 build_NMEA_cfg_msg(msg,msg_id);
 		 send_uart_message(msg, PUBX_40_FL);
 		}
-	//while (i<160000000){i++;}
+	while (i<16000000){i++;}
 	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
 	//while(1){}
 }
@@ -352,23 +352,6 @@ char make_ltl_end(char word){
 	return temp;
 }
 
-int get_lon_lat(gps_local_data_NMEA_str* gps_data) {
-	if (!fixOk) return BAD_DATA;
-	gps_data->lat_deg = ascii_2_num(&NMEA_msg[19],2);
-	gps_data->lat_min = ascii_2_num(&NMEA_msg[21],7);
-	gps_data->lon_deg = ascii_2_num(&NMEA_msg[32],3);
-	gps_data->lon_min = ascii_2_num(&NMEA_msg[35],7);
-	gps_data->POE = ((NMEA_msg[30]== 'S') ? SOUTH : (NMEA_msg[30]== 'N') ? NORTH : 0)
-				  & ((NMEA_msg[44]== 'W') ? WEST  : (NMEA_msg[44]== 'E') ? EAST  : 0);
-	gps_data->Acc = NULL;
-	DEBUG_PRINT("lat_deg: %d",gps_data->lat_deg);
-	DEBUG_PRINT("lat_min: %d",gps_data->lat_min);
-	DEBUG_PRINT("lon_deg: %d",gps_data->lon_deg);
-	DEBUG_PRINT("lon_min: %d",gps_data->lon_min);
-	DEBUG_PRINT("POE: 0x%x",gps_data->POE);
-	return GOOD_DATA;
-}
-
 double ascii_2_num (char* ascii, int length){
 	int i, before_dot=1;
 	double num=0;
@@ -380,4 +363,58 @@ double ascii_2_num (char* ascii, int length){
 		num = before_dot ? num+(ascii[i]-48)*10 : num+((double)(ascii[i]-48))/pow(10,i);
 	}
 	return num;
+}
+
+void gga_2_llh (char* message, double* llh) {
+		char *token;
+		char tmp[8];
+
+		token = strtok(message, ",");
+		token = strtok(NULL, ","); // Date and time
+		token = strtok(NULL, ","); // Latitude
+		strncpy(tmp, token, 2);
+		tmp[2] = 0;
+		llh[0] = atof(tmp) + atof(token+2)/60.0;
+
+		token = strtok(NULL, ","); // North or south
+		if (token[0]=='S'){
+			llh[0] *= -1.0;
+		}
+
+		token = strtok(NULL, ","); // Longitude
+		strncpy(tmp, token, 3);
+		tmp[3] = 0;
+		llh[1] = atof(tmp) + atof(token+3)/60.0;
+
+		token = strtok(NULL, ","); // East or west
+		if (token[0]=='W'){
+			llh[1] *= -1.0;
+		}
+
+		token = strtok(NULL, ","); // GPS fix
+		token = strtok(NULL, ","); // Number of satellites
+		token = strtok(NULL, ","); // HDOP
+		token = strtok(NULL, ","); // Altitude above meas sea level
+		llh[2] = atof(token);
+
+		token = strtok(NULL, ","); // in meter
+		token = strtok(NULL, ","); // Geoid height above WGS84 ellipsoid
+		llh[2] += atof(token);
+
+		return;
+}
+
+int get_lon_lat(gps_local_data_NMEA_str* gps_data) {
+	if (!fixOk) return BAD_DATA;
+	double llh[3];
+	gga_2_llh (NMEA_msg,llh);
+	gps_data->lat = llh[0];
+	gps_data->lon = llh[1];
+	gps_data->alt = llh[2];
+	//DEBUG_PRINT("lat_deg: %d",gps_data->lat_deg);
+	//DEBUG_PRINT("lat_min: %d",gps_data->lat_min);
+	//DEBUG_PRINT("lon_deg: %d",gps_data->lon_deg);
+	//DEBUG_PRINT("lon_min: %d",gps_data->lon_min);
+	//DEBUG_PRINT("POE: 0x%x",gps_data->POE);
+	return GOOD_DATA;
 }

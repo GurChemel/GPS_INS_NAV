@@ -17,7 +17,7 @@ void reset_global_int(void){
 
 void uart_int_handler(void) {
 	//DEBUG_PRINT("\n\r inside int handler boot time: %d\n\r", boot_time);
-	DEBUG_PRINT("\n\r handler print: ");
+	//DEBUG_PRINT("\n\r handler print: ");
 	UART_STATUS = UARTIntStatus(UARTA1_BASE, true);
 	UARTIntClear(UARTA1_BASE, UART_INT_RX);
 	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
@@ -131,21 +131,21 @@ void uart_int_handler(void) {
 					next_state =(temp == '$') ? GOT_$ : HANGING;
 					break;
 				case GOT_P:
-					if (temp == 'R'){
+					if (temp == 'G'){
 						incom_msg[3]=temp;
-						next_state = GOT_R;
+						next_state = GOT_2G;
 						break;
 					}
 					next_state =(temp == '$') ? GOT_$ : HANGING;
 					break;
-				case GOT_R:
-					if (temp == 'M'){
+				case GOT_2G:
+					if (temp == 'G'){
 						incom_msg[4]=temp;
-						next_state = GOT_M; break;
+						next_state = GOT_3G; break;
 					}
 					next_state =(temp == '$') ? GOT_$ : HANGING; break;
-				case GOT_M:
-					if (temp == 'C'){
+				case GOT_3G:
+					if (temp == 'A'){
 						incom_msg[5]=temp;
 						next_state = LOCKED_NMEA;
 						idx=6; break;
@@ -166,13 +166,13 @@ void uart_int_handler(void) {
 			}
 			state = next_state;
 			//DEBUG_PRINT("\n\r cur char: 0x%x%x", temp>>4,(temp&0xf));
-			DEBUG_PRINT("%c", temp);
+			//DEBUG_PRINT("%c", temp);
 		}
 		if (!mal_msg){
 			NMEA_len = idx+1;
 			copy_char_arr(NMEA_msg, incom_msg ,idx+1);
 			new_gps_msg =NEW;
-			fixOk = (incom_msg[17]=='A')? 1 : 0;
+			fixOk = (incom_msg[44]=='1' || incom_msg[42]=='2')? 1 : 0;
 			print_msg(NMEA_msg, idx);
 		}
 	}

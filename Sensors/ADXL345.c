@@ -58,8 +58,8 @@ int init_ADXL345(char addr)
 	if(I2C_IF_Write(addr, data, 2, true)<0)	return -7;
 	while(I2CMasterBusy(I2CA0_BASE)){}
 
-	Timer_IF_Init(PRCM_TIMERA1,TIMERA1_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,0);
-	Timer_IF_Start(TIMERA1_BASE,TIMER_A,0);
+	Timer_IF_Init(PRCM_TIMERA1,TIMERA1_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,1);
+	Timer_IF_Start(TIMERA1_BASE,TIMER_A,100);
 
 	return 0;
 }

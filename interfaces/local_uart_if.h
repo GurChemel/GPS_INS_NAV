@@ -41,8 +41,8 @@ enum {
 	GOT_$ = 0,
 	GOT_G = 1,
 	GOT_P = 2,
-	GOT_R = 3,
-	GOT_M = 4,
+	GOT_2G = 3,
+	GOT_3G = 4,
 	LOCKED_NMEA = 5,
 	HANGING = 6,
 };

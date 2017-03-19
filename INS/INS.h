@@ -22,8 +22,8 @@ void INS_calc(system_state_str* );
 #define G_VALUE 9.81
 #endif
 
-#define deg2rad M_PI/180
-#define rad2deg 180/M_PI
+#define DEG2RAD M_PI/180
+#define RAD2DEG 180/M_PI
 #define GPS_AVERAGE_LENGTH 5
 
 #endif /* INS_H_ */

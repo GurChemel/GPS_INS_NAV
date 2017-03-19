@@ -20,12 +20,9 @@ typedef struct {
 } gps_input_data_str;
 
 typedef struct {
-	double lat_deg;
-	double lat_min;
-	double lon_deg;
-	double lon_min;
-	double POE; // mask bit0 s, bit1 n. bit2: e, bit 3w.
-	int Acc;
+	double lat;
+	double lon;
+	double alt; // mask bit0 s, bit1 n. bit2: e, bit 3w.
 } gps_input_data_NMEA_str;
 
 typedef struct {
@@ -51,6 +48,10 @@ typedef struct {
 
 #define FAILED 0
 #define PASSED 1
+#define INF_PI 3.141592653589793
+#define WGS84_A 6378137
+#define WGS84_E 0.0818191908426
+#define DEGREES_TO_RADIANS INF_PI/180
 
 void get_mag_data(mag_input_data_str* mag_input);
 void get_gyr_data(gyr_input_data_str* gyr_input);
