@@ -33,7 +33,7 @@ int main(void)
 		DEBUG_PRINT("\n\rStarting system Initialization....\n\r");
 	}
 	INS_init(&systemState, local_ref_in_ECEF, enu_to_ecef_mat);
-
+	light_all_init_led();
 	if (1){
 		DEBUG_PRINT("\n\rSystem Initialized:\n\r");
 		DEBUG_PRINT("\t Local Reference (x,y,z) in ECEF: (%f, %f, %f).\n\r",(local_ref_in_ECEF[X_pos]),(local_ref_in_ECEF[Y_pos]),(local_ref_in_ECEF[Z_pos]));
@@ -60,14 +60,14 @@ int main(void)
 	while(1){
 		// Check for new GPS data.
 		//int new_gps_flag= 0;//new_gps_point();
-		if (get_gps_data(&gps_data) == PASSED){	// Activate Kalman filter.		TODO: Write new_gps_point function.
+		if (get_gps_data(&gps_data) == PASSED){	// Activate Kalman filter.
 			if (DEBUG_MODE){
 				DEBUG_PRINT("\n\r\t New GPS data.\n\r");
 			}
-				position_diff_new[X_pos]=gps_data.X-ins_position_in_ECEF[X_pos];
-				position_diff_new[Y_pos]=gps_data.Y-ins_position_in_ECEF[Y_pos];
-				position_diff_new[Z_pos]=gps_data.Z-ins_position_in_ECEF[Z_pos];
-				kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
+			position_diff_new[X_pos]=gps_data.X-ins_position_in_ECEF[X_pos];
+			position_diff_new[Y_pos]=gps_data.Y-ins_position_in_ECEF[Y_pos];
+			position_diff_new[Z_pos]=gps_data.Z-ins_position_in_ECEF[Z_pos];
+			kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
 		}
 
 		// Calculate INS position.
@@ -82,14 +82,14 @@ int main(void)
 		//SD_write_file("position_data.txt",position_data_str, strlen(position_data_str), SD_CREATE_AND_DELETE);
 
 		// Debug Printing to terminal.
-		if (DEBUG_MODE){
-			DEBUG_PRINT("\n\rEnd of loop data:\n\r");
-			DEBUG_PRINT(position_data_str);
-			DEBUG_PRINT("\t INS State (x,y,z) in ENU: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
+		if (1){
+			//DEBUG_PRINT("\n\rEnd of loop data:\n\r");
+			//DEBUG_PRINT(position_data_str);
+			//DEBUG_PRINT("\t INS State (x,y,z) in ENU: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
 			DEBUG_PRINT("\t INS State (Vx,Vy,Vz) in ENU: (%f,%f,%f).\n\n\r",systemState.Vx,systemState.Vy,systemState.Vz);
-			DEBUG_PRINT("\t INS State (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
-			DEBUG_PRINT("\t LAST GPS (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Roll,systemState.Pitch,systemState.Yaw);
-			DEBUG_PRINT("\t Kalman Error (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
+			//DEBUG_PRINT("\t INS State (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
+			//DEBUG_PRINT("\t LAST GPS (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Roll,systemState.Pitch,systemState.Yaw);
+			//DEBUG_PRINT("\t Kalman Error (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
 		}
 	}
 

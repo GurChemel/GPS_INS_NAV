@@ -57,7 +57,7 @@ void get_mag_data(mag_input_data_str* mag_input);
 void get_gyr_data(gyr_input_data_str* gyr_input);
 void get_acc_data(acc_input_data_str* acc_input);
 int get_gps_data(gps_input_data_str* gps_input);
-
+void light_all_init_led();
 #ifndef MAIN_H_
 void copy_and_convert_mag_data_2_algorithm(mag_input_data_str* mag_query, Mag_local_data_str mag_data);
 void copy_and_convert_gyr_data_2_algorithm(gyr_input_data_str* gyr_query, Gyr_local_data_str gyr_data);
@@ -69,8 +69,5 @@ void copy_and_convert_gps_data_2_algorithm_NMEA(gps_input_data_str* sw_data, gps
 void update_acc_timer(acc_input_data_str* acc_query);
 void update_gyr_timer(gyr_input_data_str* gyr_query);
 void init_board_and_sensors();
-
-//yet to be implemented
-//int new_gps_point(); TODO: you dont need this any more, get_gps_data will return before uart read if no new data available
 
 #endif /* INCLUDES_INFRASTRUCTURE_H_ */

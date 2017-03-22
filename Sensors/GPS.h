@@ -160,20 +160,20 @@
 #define CK_POS_HIGH 25
 #define CK_POS_LOW 26
 enum {
-	DTM = 0,
-	GBS = 1,
-	GGA = 2,
-	GLL = 3,
-	GPQ = 4,
-	GRS = 5,
-	GSA = 6,
-	GST = 7,
-	GSV = 8,
-	THS = 9,
-	TXT = 10,
-	VTG = 11,
-	ZDA = 12,
-	RMC = 13,
+	//DTM = 0,
+	//GBS = 1,
+	GGA = 0,
+	GLL = 1,
+	//GPQ = 4,
+	//GRS = 5,
+	GSA = 2,
+	//GST = 7,
+	GSV = 3,
+	//THS = 9,
+	//TXT = 10,
+	VTG = 4,
+	//ZDA = 12,
+	RMC = 5,
 };
 
 /********************************************************/
@@ -195,6 +195,8 @@ enum {
 #define GOOD_OP 1
 #define BAD_OP 0
 
+#define STATIC_GPS 1
+#define HARD_CODED 1
 #define NMEA 1
 #define EMPTY_BYTE 0
 #define BYTE 8

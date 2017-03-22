@@ -32,6 +32,7 @@
 
 void init_board_and_sensors(){
 	//board and chip
+	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_6, 0xff);
 	BoardInit();
 	PinMuxConfig();
 	int status = 0;
@@ -57,19 +58,16 @@ void init_board_and_sensors(){
 	//sensors
 	DEBUG_PRINT("\n\r\t\t entering gps init  \n\r");
 	status = init_gps();
-	if (status<0) {
-		UART_PRINT("failed to initialize gps reason: %d\n\r", status);
-		while (1){}
-	}
+	if (status<0) {UART_PRINT("failed to initialize gps reason: %d\n\r", status); while (1){}}
 	else DEBUG_PRINT("\n\r\t\t done init gps entering init mag \n\r");
 	status=init_HMC5883(MAG_ADDR, true);
-	if(status<0){UART_PRINT("!!! mag I2c Error. Status: %d\n\r",status);}
+	if(status<0){UART_PRINT("!!! mag I2c Error. Status: %d\n\r",status); while(1){}}
 	else DEBUG_PRINT("\n\r\t\t done init mag entering init acc \n\r");
 	status=init_ADXL345(ACC_ADDR);
-	if(status<0){UART_PRINT("!!! acc I2c Error. Status: %d\n\r",status);}
+	if(status<0){UART_PRINT("!!! acc I2c Error. Status: %d\n\r",status); while(1){}}
 	else {DEBUG_PRINT("\n\r\t\t done init acc entering init gyr \n\r");}
 	status=init_ITG3200(GYR_ADDR);
-	if(status<0){UART_PRINT("!!! gyr I2c Error. Status: %d\n\r",status);}
+	if(status<0){UART_PRINT("!!! gyr I2c Error. Status: %d\n\r",status); while(1){}}
 	else {DEBUG_PRINT("\n\r\t\t done init gyr done all sensors init \n\r");}
 	//init_MPL115A2();
 }
@@ -78,8 +76,10 @@ void init_board_and_sensors(){
 //magnetometer read data functions
 /******************************************************/
 void get_mag_data(mag_input_data_str* mag_query){
+	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
 	Mag_local_data_str mag_data;
 	HMC5883_read_magdata(MAG_ADDR, &mag_data );
+	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
 	copy_and_convert_mag_data_2_algorithm(mag_query, mag_data);
 }
 
@@ -93,8 +93,10 @@ void copy_and_convert_mag_data_2_algorithm(mag_input_data_str* mag_query, Mag_lo
 //magnetometer read data functions
 /******************************************************/
 void get_acc_data(acc_input_data_str* acc_query){
+	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
 	Acc_local_data_str acc_data;
 	ADXL345_read_accdata(ACC_ADDR, &acc_data);
+	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
 	copy_and_convert_acc_data_2_algorithm(acc_query, acc_data);
 	update_acc_timer(acc_query);
 }
@@ -109,8 +111,10 @@ void copy_and_convert_acc_data_2_algorithm(acc_input_data_str* acc_query, Acc_lo
 //gyroscope read data functions
 /******************************************************/
 void get_gyr_data(gyr_input_data_str* gyr_query){
+	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
 	Gyr_local_data_str gyr_data;
 	ITG3200_read_gyrdata(GYR_ADDR, &gyr_data);
+	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
 	copy_and_convert_gyr_data_2_algorithm(gyr_query, gyr_data);
 	update_gyr_timer(gyr_query);
 }
@@ -195,4 +199,9 @@ void update_gyr_timer (gyr_input_data_str* gyr_query){
 	gyr_query->time =  MAX_COUNT_USEC-CLOCK_PERIOD_USEC*(Timer_IF_GetCount(TIMERA2_BASE,TIMER_A));
 	Timer_IF_Init(PRCM_TIMERA2,TIMERA2_BASE,TIMER_CFG_ONE_SHOT_UP,TIMER_A,1);
 	Timer_IF_Start(TIMERA2_BASE,TIMER_A,100);
+}
+
+void light_all_init_led(){
+	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_7, 0xff);
+	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_08, 0xff);
 }

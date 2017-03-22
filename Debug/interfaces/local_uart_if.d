@@ -48,6 +48,7 @@ interfaces/local_uart_if.obj: ../interfaces/../sensors/ADXL345.h
 interfaces/local_uart_if.obj: ../interfaces/../sensors/GPS.h
 interfaces/local_uart_if.obj: ../interfaces/../sensors/HMC5883.h
 interfaces/local_uart_if.obj: ../interfaces/local_uart_if.h
+interfaces/local_uart_if.obj: ../interfaces/../includes/infrastructure.h
 
 ../interfaces/local_uart_if.c: 
 ../interfaces/../sensors/sensors.h: 
@@ -97,3 +98,4 @@ C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/timer.h:
 ../interfaces/../sensors/GPS.h: 
 ../interfaces/../sensors/HMC5883.h: 
 ../interfaces/local_uart_if.h: 
+../interfaces/../includes/infrastructure.h: 

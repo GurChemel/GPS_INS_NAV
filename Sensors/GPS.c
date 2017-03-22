@@ -8,6 +8,7 @@
 #include "math.h"
 #include "../interfaces/local_uart_if.h"
 #include "../includes/infrastructure.h"
+
 /****************************************************************************************************/
 int init_gps (){
 	int i;
@@ -32,6 +33,7 @@ int init_gps (){
 	}
 	else{
 		//cfg_NMEA_if();
+		//while(1){};
 		get_fixed_pos();
 	}
 	return GOOD_OP;
@@ -55,6 +57,7 @@ int get_fixed_pos(){
 		}
 	}else{
 		while(!fixOk){}
+
 		fixed_pos=FIX;
 	}
 	return fixed_pos;
@@ -89,7 +92,7 @@ void print_msg (char* msg, int msg_len){
 	DEBUG_PRINT("\n\r message: ");
 	if (!NMEA){
 		DEBUG_PRINT(" 0x");
-		for (i=0; i< msg_len; i++) DEBUG_PRINT("%x%x", msg[i]>>4, msg[i]&(0xf));
+		for (i=0; i< msg_len; i++) DEBUG_PRINT("%c", msg[i]);
 	}
 	else for (i=0; i< msg_len; i++) DEBUG_PRINT("%c", msg[i]);
 	//DEBUG_PRINT("\n\r");
@@ -102,7 +105,8 @@ void build_NMEA_cfg_msg(char* msg, int msg_id){
 	char temp_msg[PUBX_40_FL+1]={0};// = "$PUBX,40,DTM,0,0,0,0,0,0*000";
 	strcpy(temp_msg,"$PUBX,40,XYZ,0,0,0,0,0,0*00");
 	//temp_msg[6]=40;
-	switch (msg_id){
+	if (!HARD_CODED){
+		/*switch (msg_id){
 				case DTM:
 					copy_char_arr(temp_msg+9,"DTM",3);
 					//X='D';Y='T';Z='M';
@@ -160,13 +164,37 @@ void build_NMEA_cfg_msg(char* msg, int msg_id){
 					 //X='T';Y='H';Z='S';
 				default: break;
 			 }
-			 //temp_msg[X_POS]=X; temp_msg[Y_POS]=Y; temp_msg[Z_POS]=Z;
 			 calc_msg_checksum (&CK_A, &CK_B, temp_msg, PUBX_40_BDY_LEN);
 			 temp_msg[CK_POS_HIGH] = CK_A;
 			 temp_msg[CK_POS_LOW] = CK_B;
 			 temp_msg[PUBX_40_FL-2]=cr;
 			 temp_msg[PUBX_40_FL-1]=lf;
-			 copy_char_arr(msg,temp_msg , PUBX_40_FL);
+			 copy_char_arr(msg,temp_msg , PUBX_40_FL);*/
+	} else {
+		switch (msg_id){
+						case GGA:
+							strcpy(msg,"$PUBX,40,GGA,1,1,1,0*5B\r\n");
+							break;
+						case GLL:
+							strcpy(msg,"$PUBX,40,GLL,0,0,0,0*5C \r\n");
+							 break;
+						case GSA:
+							strcpy(msg,"$PUBX,40,GSA,0,0,0,0*4E\r\n");
+							 break;
+						case GSV:
+							strcpy(msg,"$PUBX,40,GSV,0,0,0,0*59\r\n");
+							 break;
+						case VTG:
+							strcpy(msg,"$PUBX,40,VTG,0,0,0,0*5E\r\n");
+							 break;
+						case RMC:
+							strcpy(msg,"$PUBX,40,RMC,0,0,0,0*47\r\n");
+							break;
+						default: break;
+					 }
+
+	}
+			 //temp_msg[X_POS]=X; temp_msg[Y_POS]=Y; temp_msg[Z_POS]=Z;
 			 print_msg (msg, PUBX_40_FL);
 
 }
@@ -176,10 +204,12 @@ void cfg_NMEA_if (){
 	int i=0;
 	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
 	char msg[PUBX_40_FL]={0};
-	for (msg_id=DTM; msg_id<RMC; msg_id++){
-		 build_NMEA_cfg_msg(msg,msg_id);
-		 send_uart_message(msg, PUBX_40_FL);
-		}
+	for (msg_id=GGA; msg_id<=RMC; msg_id++){
+		 for (i=0; i<10; i++){
+			 build_NMEA_cfg_msg(msg,msg_id);
+			 send_uart_message(msg, PUBX_40_FL);
+		 }
+	}
 	while (i<16000000){i++;}
 	UARTIntEnable(UARTA1_BASE, UART_INT_RX);
 	//while(1){}
@@ -405,7 +435,11 @@ void gga_2_llh (char* message, double* llh) {
 }
 
 int get_lon_lat(gps_local_data_NMEA_str* gps_data) {
-	if (!fixOk) return BAD_DATA;
+
+	if (!fixOk) {
+	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_7, 0x00);
+	return BAD_DATA;
+	}
 	double llh[3];
 	gga_2_llh (NMEA_msg,llh);
 	gps_data->lat = llh[0];

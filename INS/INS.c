@@ -63,7 +63,8 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	gps_data_mean.Z=0;
 	int i=0;
 	for (i=0;i<GPS_AVERAGE_LENGTH;i++){
-		get_gps_data(&gps_data);						// TODO: Set waiting period of at least 1 sec.
+		MAP_UtilsDelay(80000000/5);	// Wait for ~1 sec.
+		get_gps_data(&gps_data);
 		gps_data_mean.X=gps_data_mean.X+gps_data.X;
 		gps_data_mean.Y=gps_data_mean.Y+gps_data.Y;
 		gps_data_mean.Z=gps_data_mean.Z+gps_data.Z;
@@ -118,10 +119,10 @@ void INS_calc(system_state_str* systemState)
 	// Get acceleration in RPY and convert them to ENU.
 	acc_input_data_str acc_data;			//	acc_data.Ax , acc_data.Ay , acc_data.Az , acc_data.time
 	get_acc_data(&acc_data);
-	if (DEBUG_MODE){
-		DEBUG_PRINT("Accelerometer (Ax,Ay,Az,dt): (%f,%f,%f,%f). \n\r",acc_data.Ax,acc_data.Ay,acc_data.Az,acc_data.time);
+	double acc_dt = acc_data.time/1000000;	// Convert to seconds.
+	if (1){
+		DEBUG_PRINT("Accelerometer (Ax,Ay,Az,dt): (%f,%f,%f,%f). \n\r",acc_data.Ax,acc_data.Ay,acc_data.Az,acc_dt);
 	}
-	double acc_dt = acc_data.time;
 	double rpy_accel[3];
 	rpy_accel[X_pos]=G_VALUE*acc_data.Ax;
 	rpy_accel[Y_pos]=G_VALUE*acc_data.Ay;
@@ -141,10 +142,10 @@ void INS_calc(system_state_str* systemState)
 	// Get velocity in Roll Pitch Yaw and calculate new values.
 	gyr_input_data_str gyr_data;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
 	get_gyr_data(&gyr_data);
-	if (DEBUG_MODE){
-		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr_data.time);
+	double gyr_dt= gyr_data.time/1000000;	// Convert to seconds.
+	if (1){
+		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr_dt);
 	}
-	double gyr_dt= gyr_data.time;
 
 	systemState->Roll=(systemState->Roll)+gyr_dt*(gyr_data.Wr);
 	systemState->Pitch=(systemState->Pitch)+gyr_dt*(gyr_data.Wp);

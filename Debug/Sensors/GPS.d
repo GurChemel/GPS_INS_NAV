@@ -47,7 +47,9 @@ Sensors/GPS.obj: ../Sensors/MPL115A2.h
 Sensors/GPS.obj: ../Sensors/ADXL345.h
 Sensors/GPS.obj: ../Sensors/GPS.h
 Sensors/GPS.obj: ../Sensors/HMC5883.h
+Sensors/GPS.obj: C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/math.h
 Sensors/GPS.obj: ../Sensors/../interfaces/local_uart_if.h
+Sensors/GPS.obj: ../Sensors/../interfaces/../includes/infrastructure.h
 
 ../Sensors/GPS.c: 
 ../Sensors/sensors.h: 
@@ -96,4 +98,6 @@ C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/timer.h:
 ../Sensors/ADXL345.h: 
 ../Sensors/GPS.h: 
 ../Sensors/HMC5883.h: 
+C:/TI/ccsv6/tools/compiler/arm_15.12.3.LTS/include/math.h: 
 ../Sensors/../interfaces/local_uart_if.h: 
+../Sensors/../interfaces/../includes/infrastructure.h: 

@@ -7,6 +7,7 @@
 
 #include "../sensors/sensors.h"
 #include "local_uart_if.h"
+char static_NMEA_msg[74] = "$GPGGA,193813.00,3246.86405,N,03500.84086,E,1,04,5.26,214.7,M,18.8,M,,*51";
 
 void reset_global_int(void){
 	new_ack_msg = OLD;
@@ -20,6 +21,12 @@ void uart_int_handler(void) {
 	//DEBUG_PRINT("\n\r handler print: ");
 	UART_STATUS = UARTIntStatus(UARTA1_BASE, true);
 	UARTIntClear(UARTA1_BASE, UART_INT_RX);
+	if (STATIC_GPS) {
+		copy_char_arr(NMEA_msg, static_NMEA_msg ,74);
+		new_gps_msg =NEW;
+		fixOk = 1;
+		return;
+	}
 	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
 	char temp;
 	int idx=0;
@@ -170,10 +177,14 @@ void uart_int_handler(void) {
 		}
 		if (!mal_msg){
 			NMEA_len = idx+1;
-			copy_char_arr(NMEA_msg, incom_msg ,idx+1);
-			new_gps_msg =NEW;
-			fixOk = (incom_msg[44]=='1' || incom_msg[42]=='2')? 1 : 0;
-			print_msg(NMEA_msg, idx);
+			if (STATIC_GPS) copy_char_arr(NMEA_msg, static_NMEA_msg ,idx+1);
+			else			copy_char_arr(NMEA_msg, incom_msg ,idx+1);
+			fixOk = (incom_msg[44]=='1' || incom_msg[44]=='2')? 1 : 0 ;
+			if (!fixOk){
+				print_msg(NMEA_msg, idx);
+			} else {
+				new_gps_msg =NEW;
+			}
 		}
 	}
 	//DEBUG_PRINT("\n\r done handler");
