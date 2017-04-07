@@ -106,7 +106,7 @@ void build_NMEA_cfg_msg(char* msg, int msg_id){
 	strcpy(temp_msg,"$PUBX,40,XYZ,0,0,0,0,0,0*00");
 	//temp_msg[6]=40;
 	if (!HARD_CODED){
-		/*switch (msg_id){
+		switch (msg_id){
 				case DTM:
 					copy_char_arr(temp_msg+9,"DTM",3);
 					//X='D';Y='T';Z='M';
@@ -169,7 +169,7 @@ void build_NMEA_cfg_msg(char* msg, int msg_id){
 			 temp_msg[CK_POS_LOW] = CK_B;
 			 temp_msg[PUBX_40_FL-2]=cr;
 			 temp_msg[PUBX_40_FL-1]=lf;
-			 copy_char_arr(msg,temp_msg , PUBX_40_FL);*/
+			 copy_char_arr(msg,temp_msg , PUBX_40_FL);
 	} else {
 		switch (msg_id){
 						case GGA:

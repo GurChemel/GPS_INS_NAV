@@ -160,20 +160,20 @@
 #define CK_POS_HIGH 25
 #define CK_POS_LOW 26
 enum {
-	//DTM = 0,
-	//GBS = 1,
 	GGA = 0,
 	GLL = 1,
-	//GPQ = 4,
-	//GRS = 5,
 	GSA = 2,
-	//GST = 7,
 	GSV = 3,
-	//THS = 9,
-	//TXT = 10,
 	VTG = 4,
-	//ZDA = 12,
 	RMC = 5,
+	GST = 6,
+	THS = 7,
+	TXT = 8,
+	ZDA = 9,
+	DTM = 10,
+	GBS = 11,
+	GPQ = 12,
+	GRS = 13,
 };
 
 /********************************************************/

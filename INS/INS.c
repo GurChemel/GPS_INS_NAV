@@ -11,7 +11,7 @@
 #include "INS.h"
 #include "../includes/infrastructure.h"
 
-
+#define AVERGING_NUMBER 100
 
 // 3*3 Matrix multiplication. out_vec=matrix*in_vec.
 void mat_dot_vec(double matrix[3][3], double in_vec[3], double out_vec[3])
@@ -22,7 +22,7 @@ void mat_dot_vec(double matrix[3][3], double in_vec[3], double out_vec[3])
 }
 
 // INS_init: Set the system initial state (in ENU), angle (in RPY) and reference point (in ECEF)
-void INS_init(system_state_str* systemState, double localRef[3], double enuToEcefMat[3][3])
+void INS_init(system_state_str* systemState, double localRef[3], double enuToEcefMat[3][3], double gyro_offset[3], double enu_offset[3])
 {
 
 	// Set initial Position and velocity in ENU to 0.
@@ -38,9 +38,16 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	get_acc_data(&acc_data);
 	mag_input_data_str mag_data;			//	mag_data.Hx , mag_data.Hy , mag_data.Hz
 	get_mag_data(&mag_data);
-	while (DEBUG_MODE){
+	if (1){
 		DEBUG_PRINT("Magnetometer (Hx,Hy,Hz): (%f,%f,%f). \n\r",mag_data.Hx,mag_data.Hy,mag_data.Hz);
 	}
+
+	//mag_data.Hx=0;
+	//mag_data.Hy=0;
+	//mag_data.Hz=0;
+	//acc_data.Ax=0;
+	//acc_data.Ay=0;
+	//acc_data.Az=1;
 
 	// Algorithm used by Rafael Taub.
 	double phi = atan2(acc_data.Ay, acc_data.Az);
@@ -54,6 +61,43 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	systemState->Roll=phi*RAD2DEG;
 	systemState->Pitch=theta*RAD2DEG;
 	systemState->Yaw=psi*RAD2DEG;
+	DEBUG_PRINT("(R,P,Y): (%f,%f,%f). \n\r",systemState->Roll,systemState->Pitch,systemState->Yaw);
+
+	// Build RPYtoENU matrix according to Roll,Pitch,Yaw.
+	double sinpsi = sin(psi);
+	double cospsi = cos(psi);
+	double rpy_to_enu_mat[3][3];
+	rpy_to_enu_mat[0][0]=sinpsi*costheta;
+	rpy_to_enu_mat[0][1]=( cosphi*cospsi+sinphi*sintheta*sinpsi);
+	rpy_to_enu_mat[0][2]=(-sinphi*cospsi+cosphi*sintheta*sinpsi);
+	rpy_to_enu_mat[1][0]=cospsi*costheta;
+	rpy_to_enu_mat[1][1]=(-cosphi*sinpsi+sinphi*sintheta*cospsi);
+	rpy_to_enu_mat[1][2]=( sinphi*sinpsi+cosphi*sintheta*cospsi);
+	rpy_to_enu_mat[2][0]=sintheta;
+	rpy_to_enu_mat[2][1]=(-sinphi*costheta);
+	rpy_to_enu_mat[2][2]=(-cosphi*costheta);
+
+	// Get Average accelartions:
+	//acc_input_data_str acc_data;			//	acc_data.Ax , acc_data.Ay , acc_data.Az , acc_data.time
+	double rpy_accel[3];
+	double enu_accel[3];
+	int i=0;
+	for (i=0;i<AVERGING_NUMBER;i++){
+		get_acc_data(&acc_data);
+		rpy_accel[X_pos]=G_VALUE*acc_data.Ax;
+		rpy_accel[Y_pos]=G_VALUE*acc_data.Ay;
+		rpy_accel[Z_pos]=G_VALUE*acc_data.Az;
+		mat_dot_vec(rpy_to_enu_mat,rpy_accel,enu_accel);
+		//enu_accel[Z_pos]=enu_accel[Z_pos]+G_VALUE;	// Compensate on earth's Gravitational force on the Up axis.
+		enu_offset[X_pos]=enu_offset[X_pos]+enu_accel[X_pos];
+		enu_offset[Y_pos]=enu_offset[Y_pos]+enu_accel[Y_pos];
+		enu_offset[Z_pos]=enu_offset[Z_pos]+enu_accel[Z_pos];
+		MAP_UtilsDelay(1000000/5);	// Wait for ~0.0125 sec.
+	}
+	enu_offset[X_pos]=enu_offset[X_pos]/AVERGING_NUMBER;
+	enu_offset[Y_pos]=enu_offset[Y_pos]/AVERGING_NUMBER;
+	enu_offset[Z_pos]=enu_offset[Z_pos]/AVERGING_NUMBER;
+
 
 	// Average GPS_AVERAGE_LENGTH GPS data readings and save as local reference from ECEF zero to ENU zero (In ECEF coordinate).
 	gps_input_data_str gps_data;			//	gps_data.X	, gps_data.Y  , gps_data.Z
@@ -61,10 +105,9 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	gps_data_mean.X=0;
 	gps_data_mean.Y=0;
 	gps_data_mean.Z=0;
-	int i=0;
 	for (i=0;i<GPS_AVERAGE_LENGTH;i++){
-		MAP_UtilsDelay(80000000/5);	// Wait for ~1 sec.
-		get_gps_data(&gps_data);
+		//MAP_UtilsDelay(80000000/5);	// Wait for ~1 sec.
+		while (get_gps_data(&gps_data)==0) {};
 		gps_data_mean.X=gps_data_mean.X+gps_data.X;
 		gps_data_mean.Y=gps_data_mean.Y+gps_data.Y;
 		gps_data_mean.Z=gps_data_mean.Z+gps_data.Z;
@@ -73,6 +116,19 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	localRef[Y_pos]=gps_data_mean.Y/GPS_AVERAGE_LENGTH;
 	localRef[Z_pos]=gps_data_mean.Z/GPS_AVERAGE_LENGTH;
 
+	// Get gyro offset mean:
+	gyr_input_data_str gyr_data;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
+	double gyro_mean[3]={0};
+	for (i=0;i<AVERGING_NUMBER;i++){
+		get_gyr_data(&gyr_data);
+		gyro_mean[X_pos]=gyro_mean[X_pos]+gyr_data.Wr;
+		gyro_mean[Y_pos]=gyro_mean[Y_pos]+gyr_data.Wp;
+		gyro_mean[Z_pos]=gyro_mean[Z_pos]+gyr_data.Wy;
+		MAP_UtilsDelay(1000000/5);	// Wait for ~0.0125 sec.
+	}
+	gyro_offset[X_pos]=gyro_mean[X_pos]/AVERGING_NUMBER;
+	gyro_offset[Y_pos]=gyro_mean[Y_pos]/AVERGING_NUMBER;
+	gyro_offset[Z_pos]=gyro_mean[Z_pos]/AVERGING_NUMBER;
 
 	// Calculate enuToEcefMat according to theta and phi from gps.
 	double phi_eccef = atan2(gps_data_mean.Y, gps_data_mean.Z);
@@ -92,10 +148,11 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	enuToEcefMat[2][0]=(0);
 	enuToEcefMat[2][1]=(cosph);
 	enuToEcefMat[2][2]=(sinph);
+
 }
 
 
-void INS_calc(system_state_str* systemState)
+void INS_calc(system_state_str* systemState, double gyro_offset[3], double enu_offset[3])
 {
 	// Build RPYtoENU matrix according to Roll,Pitch,Yaw.
 	double sr = sin(DEG2RAD*systemState->Roll);
@@ -120,7 +177,7 @@ void INS_calc(system_state_str* systemState)
 	acc_input_data_str acc_data;			//	acc_data.Ax , acc_data.Ay , acc_data.Az , acc_data.time
 	get_acc_data(&acc_data);
 	double acc_dt = acc_data.time/1000000;	// Convert to seconds.
-	if (1){
+	if (0){
 		DEBUG_PRINT("Accelerometer (Ax,Ay,Az,dt): (%f,%f,%f,%f). \n\r",acc_data.Ax,acc_data.Ay,acc_data.Az,acc_dt);
 	}
 	double rpy_accel[3];
@@ -129,7 +186,12 @@ void INS_calc(system_state_str* systemState)
 	rpy_accel[Z_pos]=G_VALUE*acc_data.Az;
 	double enu_accel[3];
 	mat_dot_vec(rpy_to_enu_mat,rpy_accel,enu_accel);
-	enu_accel[Z_pos]=enu_accel[Z_pos]+G_VALUE;	// Compensate on earth's Gravitational force on the Up axis.
+	//enu_accel[Z_pos]=enu_accel[Z_pos]+G_VALUE;
+	// Compensate on earth's Gravitational force on the Up axis.
+	enu_accel[X_pos]=enu_accel[X_pos]-enu_offset[X_pos];
+	enu_accel[Y_pos]=enu_accel[Y_pos]-enu_offset[Y_pos];
+	enu_accel[Z_pos]=enu_accel[Z_pos]-enu_offset[Z_pos];
+	//DEBUG_PRINT("ENU Accelerometer (Ax,Ay,Az): (%f,%f,%f). \n\r",enu_accel[X_pos],enu_accel[Y_pos],enu_accel[Z_pos]);
 
 	// Calculate new Position and velocity.
 	systemState->Px=(systemState->Px)+(systemState->Vx)*acc_dt+0.5*(enu_accel[X_pos])*(acc_dt*acc_dt);
@@ -143,7 +205,10 @@ void INS_calc(system_state_str* systemState)
 	gyr_input_data_str gyr_data;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
 	get_gyr_data(&gyr_data);
 	double gyr_dt= gyr_data.time/1000000;	// Convert to seconds.
-	if (1){
+	gyr_data.Wr=gyr_data.Wr-gyro_offset[X_pos];
+	gyr_data.Wp=gyr_data.Wp-gyro_offset[Y_pos];
+	gyr_data.Wy=gyr_data.Wy-gyro_offset[Z_pos];
+	if (0){
 		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr_dt);
 	}
 

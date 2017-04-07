@@ -18,17 +18,22 @@ void reset_global_int(void){
 
 void uart_int_handler(void) {
 	//DEBUG_PRINT("\n\r inside int handler boot time: %d\n\r", boot_time);
-	//DEBUG_PRINT("\n\r handler print: ");
+	//DEBUG_PRINT("\n\r UART handler print.");
 	UART_STATUS = UARTIntStatus(UARTA1_BASE, true);
 	UARTIntClear(UARTA1_BASE, UART_INT_RX);
+	char temp;
+	int i;
 	if (STATIC_GPS) {
+		for (i=0;i<5;i++) {
+			temp = (char)UARTCharGet(UARTA1_BASE);
+		}
 		copy_char_arr(NMEA_msg, static_NMEA_msg ,74);
 		new_gps_msg =NEW;
 		fixOk = 1;
 		return;
 	}
 	UARTIntDisable(UARTA1_BASE, UART_INT_RX);
-	char temp;
+	//char temp;
 	int idx=0;
 	char incom_msg [100]={0};
 	int cont_get_char = 1;

@@ -46,7 +46,7 @@ void init_board_and_sensors(){
 	init_uart();
 	DEBUG_PRINT("\n\r\t\t done uart. entering i2c init \n\r");
 	status = init_i2c();
-	UART_PRINT("i2c init: %d\n\r", status);
+	//UART_PRINT("i2c init: %d\n\r", status);
 	DEBUG_PRINT("\n\r\t\t done i2c. entering sd init \n\r");
 	init_SD_card();
 	DEBUG_PRINT("\n\r\t\t done sd init. entering sd write \n\r");

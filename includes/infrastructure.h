@@ -10,6 +10,7 @@
 
 #ifndef DEBUG_PRINT
 #define DEBUG_PRINT  Report
+#define MAT_DEBUG_PRINT(string,mat) DEBUG_PRINT("Matrix %s:\n\r\t(%lf,%lf,%lf)\n\r\t(%lf,%lf,%lf)\n\r\t(%lf,%lf,%lf)\n\r",string,mat[0][0],mat[0][1],mat[0][2],mat[1][0],mat[1][1],mat[1][2],mat[2][0],mat[2][1],mat[2][2])
 #endif
 
 typedef struct {
