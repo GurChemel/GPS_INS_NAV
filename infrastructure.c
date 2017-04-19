@@ -50,8 +50,8 @@ void init_board_and_sensors(){
 	DEBUG_PRINT("\n\r\t\t done i2c. entering sd init \n\r");
 	init_SD_card();
 	DEBUG_PRINT("\n\r\t\t done sd init. entering sd write \n\r");
-	SD_write_file("hello.txt", "my name is", strlen("my name is"), SD_CREATE_AND_DELETE);
-	//DEBUG_PRINT("\n\r\t\t done sd writing. entering ds2401 \n\r");
+	status = SD_write_file("hello.txt", "my name is Gur", strlen("my name is Gur"), SD_CREATE_AND_DELETE);
+	DEBUG_PRINT("\n\r\t\t done sd writing. status: %d \n\r", status);
 	init_ds2401();
 	DEBUG_PRINT("\n\r\t\t done all init \n\r");
 
@@ -202,6 +202,6 @@ void update_gyr_timer (gyr_input_data_str* gyr_query){
 }
 
 void light_all_init_led(){
-	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_7, 0xff);
+	GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_7, 0xff);
 	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_08, 0xff);
 }

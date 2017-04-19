@@ -44,6 +44,13 @@ board/SD_card.obj: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/timer.h
 board/SD_card.obj: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ff.h
 board/SD_card.obj: C:/TI/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ffconf.h
 board/SD_card.obj: ../board/SD_card.h
+board/SD_card.obj: ../board/../Sensors/sensors.h
+board/SD_card.obj: ../board/../Sensors/ITG3200.h
+board/SD_card.obj: ../board/../Sensors/MPL115A2.h
+board/SD_card.obj: ../board/../Sensors/ADXL345.h
+board/SD_card.obj: ../board/../Sensors/GPS.h
+board/SD_card.obj: ../board/../Sensors/HMC5883.h
+board/SD_card.obj: ../board/../includes/infrastructure.h
 
 ../board/SD_card.c: 
 ../board/../includes/std_inc.h: 
@@ -89,3 +96,10 @@ C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/timer.h:
 C:/TI/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ff.h: 
 C:/TI/CC3200SDK_1.2.0/cc3200-sdk/third_party/fatfs/src/ffconf.h: 
 ../board/SD_card.h: 
+../board/../Sensors/sensors.h: 
+../board/../Sensors/ITG3200.h: 
+../board/../Sensors/MPL115A2.h: 
+../board/../Sensors/ADXL345.h: 
+../board/../Sensors/GPS.h: 
+../board/../Sensors/HMC5883.h: 
+../board/../includes/infrastructure.h: 

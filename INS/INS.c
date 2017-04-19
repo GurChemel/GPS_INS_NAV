@@ -10,6 +10,7 @@
 #include "../main.h"
 #include "INS.h"
 #include "../includes/infrastructure.h"
+#include "matrix_manipulation.h"
 
 #define AVERGING_NUMBER 100
 
@@ -22,7 +23,7 @@ void mat_dot_vec(double matrix[3][3], double in_vec[3], double out_vec[3])
 }
 
 // INS_init: Set the system initial state (in ENU), angle (in RPY) and reference point (in ECEF)
-void INS_init(system_state_str* systemState, double localRef[3], double enuToEcefMat[3][3], double gyro_offset[3], double enu_offset[3])
+void INS_init(system_state_str* systemState, double localRef[3], double enuToEcefMat[3][3], double EcefToEnuMat[3][3], double gyro_offset[3], double enu_offset[3])
 {
 
 	// Set initial Position and velocity in ENU to 0.
@@ -149,6 +150,14 @@ void INS_init(system_state_str* systemState, double localRef[3], double enuToEce
 	enuToEcefMat[2][1]=(cosph);
 	enuToEcefMat[2][2]=(sinph);
 
+	int col,row;
+	for (row=0;row<3;row++){
+		for (col=0;col<3;col++){
+			EcefToEnuMat[row][col]=enuToEcefMat[row][col];
+		}
+	}
+	matrix_inverse_3x3(EcefToEnuMat);
+
 }
 
 
@@ -192,6 +201,7 @@ void INS_calc(system_state_str* systemState, double gyro_offset[3], double enu_o
 	enu_accel[Y_pos]=enu_accel[Y_pos]-enu_offset[Y_pos];
 	enu_accel[Z_pos]=enu_accel[Z_pos]-enu_offset[Z_pos];
 	//DEBUG_PRINT("ENU Accelerometer (Ax,Ay,Az): (%f,%f,%f). \n\r",enu_accel[X_pos],enu_accel[Y_pos],enu_accel[Z_pos]);
+	//DEBUG_PRINT("%f,%f,%f,%f,",acc_dt,enu_accel[X_pos],enu_accel[Y_pos],enu_accel[Z_pos]);
 
 	// Calculate new Position and velocity.
 	systemState->Px=(systemState->Px)+(systemState->Vx)*acc_dt+0.5*(enu_accel[X_pos])*(acc_dt*acc_dt);
@@ -211,6 +221,7 @@ void INS_calc(system_state_str* systemState, double gyro_offset[3], double enu_o
 	if (0){
 		DEBUG_PRINT("Gyroscope (Wr,Wp,Wy,dt): (%f,%f,%f,%f). \n\r",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy,gyr_dt);
 	}
+	//DEBUG_PRINT("%f,%f,%f,",gyr_data.Wr,gyr_data.Wp,gyr_data.Wy);
 
 	systemState->Roll=(systemState->Roll)+gyr_dt*(gyr_data.Wr);
 	systemState->Pitch=(systemState->Pitch)+gyr_dt*(gyr_data.Wp);

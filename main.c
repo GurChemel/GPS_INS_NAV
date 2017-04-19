@@ -4,8 +4,10 @@
 
 //#include "includes.h"
 #include "main.h"
+#include "board/board.h"
 #include "includes/infrastructure.h"
 #include "INS/INS.h"
+#include "Sensors/sensors.h"
 #include "INS/kalman_filter.h"
 #include "common/uart_if.h"
 #include "includes/std_inc.h"
@@ -32,11 +34,10 @@ int main(void)
 	double gyro_offset[DIM_SIZE]={0};
 	double enu_offset[DIM_SIZE]={0};
 	double enu_to_ecef_mat[DIM_SIZE][DIM_SIZE];
+	double ecef_to_enu_mat[DIM_SIZE][DIM_SIZE];
 	double ins_position_in_ECEF[DIM_SIZE]= {0};
-	if (DEBUG_MODE){
-		DEBUG_PRINT("\n\rStarting system Initialization....\n\r");
-	}
-	INS_init(&systemState, local_ref_in_ECEF, enu_to_ecef_mat,gyro_offset,enu_offset);
+	DEBUG_PRINT("\n\rStarting system Initialization....\n\r");
+	INS_init(&systemState, local_ref_in_ECEF, enu_to_ecef_mat,ecef_to_enu_mat,gyro_offset,enu_offset);
 	light_all_init_led();
 	if (1){
 		DEBUG_PRINT("\n\rSystem Initialized:\n\r");
@@ -53,86 +54,93 @@ int main(void)
 	double noise_variance_matrix[DIM_SIZE][DIM_SIZE]={ {0.25,0,0}, {0,0.25,0}, {0,0,0.25} };	// TODO: Maybe move to Infrastructure.
 
 	// set GPS Parameters.
-	gps_input_data_str gps_data;
+	gps_input_data_str gps_data,old_gps_data;
+	// Initialize old_gps:
+	old_gps_data.X=local_ref_in_ECEF[X_pos];
+	old_gps_data.Y=local_ref_in_ECEF[Y_pos];
+	old_gps_data.Z=local_ref_in_ECEF[Z_pos];
 
 	// Set general Parameters.
-	double output_position_in_ECEF[DIM_SIZE];
-	char position_data_format[] = "Position diff in ECEF (x,y,z): (%lf,%lf,%lf)\n\r";
-	char position_data_str[MAX_STRING_LENGTH];
 	int row;
 	int loop_counter=1;
+	double output_position_in_ECEF[DIM_SIZE];
+	char position_data_format[] = "%lf %lf %lf\n";	//Position in ECEF (x,y,z)
+	char position_data_str[MAX_STRING_LENGTH];
 
+	// Gur: Added for offset testing:
+	//gyr_input_data_str gyr_data_for_offset;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
+	//double gyro_mean[3]={0};
+	//int i=0;
+	sprintf(position_data_str,"X_ECEF_POSITION Y_ECEF_POSITION Z_ECEF_POSITION\n");
+	SD_write_file("position.txt",position_data_str, strlen(position_data_str), SD_CREATE_AND_DELETE);
 	while(1){
 		// Check for new GPS data.
-		//int new_gps_flag= 0;//new_gps_point();
 		if ((get_gps_data(&gps_data) == PASSED) && (loop_counter>1)){	// Activate Kalman filter.
-			if (1){
-				DEBUG_PRINT("\n\r\t New GPS data.\n\n\r");
-			}
-			position_diff_new[X_pos]=gps_data.X-ins_position_in_ECEF[X_pos];
-			position_diff_new[Y_pos]=gps_data.Y-ins_position_in_ECEF[Y_pos];
-			position_diff_new[Z_pos]=gps_data.Z-ins_position_in_ECEF[Z_pos];
+			//position_diff_new[X_pos]=gps_data.X-ins_position_in_ECEF[X_pos];
+			//position_diff_new[Y_pos]=gps_data.Y-ins_position_in_ECEF[Y_pos];
+			//position_diff_new[Z_pos]=gps_data.Z-ins_position_in_ECEF[Z_pos];
+			//DEBUG_PRINT("\n\r\t New GPS data.\n\n\r");
 			//DEBUG_PRINT("New Diff: (%f,%f,%f)\n\r",position_diff_new[0],position_diff_new[1],position_diff_new[2]);
-			kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
+			//kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
+			systemState.Vx=ecef_to_enu_mat[0][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[0][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[0][2]*(gps_data.Z-old_gps_data.Z);
+			systemState.Vy=ecef_to_enu_mat[1][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[1][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[1][2]*(gps_data.Z-old_gps_data.Z);
+			systemState.Vz=ecef_to_enu_mat[2][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[2][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[2][2]*(gps_data.Z-old_gps_data.Z);
+			systemState.Px=ecef_to_enu_mat[0][0]*(gps_data.X)+ecef_to_enu_mat[0][1]*(gps_data.Y)+ecef_to_enu_mat[0][2]*(gps_data.Z);
+			systemState.Py=ecef_to_enu_mat[1][0]*(gps_data.X)+ecef_to_enu_mat[1][1]*(gps_data.Y)+ecef_to_enu_mat[1][2]*(gps_data.Z);
+			systemState.Pz=ecef_to_enu_mat[2][0]*(gps_data.X)+ecef_to_enu_mat[2][1]*(gps_data.Y)+ecef_to_enu_mat[2][2]*(gps_data.Z);
+			old_gps_data.X=gps_data.X;
+			old_gps_data.Y=gps_data.Y;
+			old_gps_data.Z=gps_data.Z;
+		} else {
+			// Calculate INS position.
+			INS_calc(&systemState,gyro_offset,enu_offset);
 		}
-
-		// Calculate INS position.
-		INS_calc(&systemState,gyro_offset,enu_offset);
+		// Convert ENU to ECEF:
 		for (row=0;row<DIM_SIZE;row++){
 			ins_position_in_ECEF[row]=local_ref_in_ECEF[row]+enu_to_ecef_mat[row][0]*systemState.Px+enu_to_ecef_mat[row][1]*systemState.Py+enu_to_ecef_mat[row][2]*systemState.Pz;
-			output_position_in_ECEF[row]=ins_position_in_ECEF[row]+position_diff_old[row];
+			output_position_in_ECEF[row]=ins_position_in_ECEF[row];//+position_diff_old[row];
 		}
-		// Send Position to SD Card:
-		//sprintf(position_data_str,position_data_format,output_position_in_ECEF[X_pos],output_position_in_ECEF[Y_pos],output_position_in_ECEF[Z_pos]);
-		//SD_write_file("position_data.txt",position_data_str, strlen(position_data_str), SD_CREATE_AND_DELETE);
+		//Send Position to SD Card:
+		sprintf(position_data_str,position_data_format,output_position_in_ECEF[X_pos],output_position_in_ECEF[Y_pos],output_position_in_ECEF[Z_pos]);
+		SD_write_file("position.txt",position_data_str, strlen(position_data_str), SD_CREATE_OR_OPEN);
 
 		// Debug Printing to terminal.
 		//DEBUG_PRINT("Diff: (%f,%f,%f)\n\r",position_diff_old[0],position_diff_old[1],position_diff_old[2]);
 		//DEBUG_PRINT(position_data_format,output_position_in_ECEF[X_pos]-gps_data.X,output_position_in_ECEF[Y_pos]-gps_data.Y,output_position_in_ECEF[Z_pos]-gps_data.Z);
 		//DEBUG_PRINT("\n\rEnd of loop data:\n\r");
-		//DEBUG_PRINT(position_data_str);
+		DEBUG_PRINT(position_data_str);
 		//DEBUG_PRINT("\t INS State (x,y,z) in ENU: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
-		DEBUG_PRINT("INS State (Vx,Vy,Vz) in ENU: (%f,%f,%f).\n\r",systemState.Vx,systemState.Vy,systemState.Vz);
-		//DEBUG_PRINT("\t INS State (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
+		//DEBUG_PRINT("INS State (Vx,Vy,Vz) in ENU: (%f,%f,%f).\n\r",systemState.Vx,systemState.Vy,systemState.Vz);
+		//DEBUG_PRINT("INS State (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
+		//DEBUG_PRINT("%f,%f,%f,",systemState.Vx,systemState.Vy,systemState.Vz);
+		//DEBUG_PRINT("%f,%f,%f\n\r",systemState.Px,systemState.Py,systemState.Pz);
 		//DEBUG_PRINT("\t LAST GPS (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Roll,systemState.Pitch,systemState.Yaw);
 		//DEBUG_PRINT("\t Kalman Error (x,y,z) in ECEF: (%f,%f,%f).\n\r",systemState.Px,systemState.Py,systemState.Pz);
 
-		if (loop_counter < WAIT_LOOPS_UNTIL_NEW_AVERAGE) {
+		loop_counter++;
+
+		/*if (loop_counter < WAIT_LOOPS_UNTIL_NEW_AVERAGE) {
 			loop_counter++;
 		}
+		else{
+			gyro_mean[X_pos]=0;
+			gyro_mean[Y_pos]=0;
+			gyro_mean[Z_pos]=0;
+			// Get gyro offset mean:
+			for (i=0;i<100;i++){
+				get_gyr_data(&gyr_data_for_offset);
+				gyro_mean[X_pos]=gyro_mean[X_pos]+gyr_data_for_offset.Wr;
+				gyro_mean[Y_pos]=gyro_mean[Y_pos]+gyr_data_for_offset.Wp;
+				gyro_mean[Z_pos]=gyro_mean[Z_pos]+gyr_data_for_offset.Wy;
+				MAP_UtilsDelay(1000000/5);	// Wait for ~0.0125 sec.
+			}
+			gyro_offset[X_pos]=gyro_mean[X_pos]/100;
+			gyro_offset[Y_pos]=gyro_mean[Y_pos]/100;
+			gyro_offset[Z_pos]=gyro_mean[Z_pos]/100;
+			loop_counter=0;
+			//DEBUG_PRINT("%f,%f,%f\n\r",gyro_offset[X_pos]-gyro_offset[X_pos],gyro_offset[Y_pos]-gyro_offset[Y_pos],gyro_offset[Z_pos]-gyro_offset[Z_pos]);
+		}*/
 	}
 
 }
 
-
-
-
-
-
-
-/*
-// Initiating and Clearing the Terminal.
-InitTerm();
-ClearTerm();
-
-// Displaying Application name and Compilation data.
-DisplayBanner(APP_NAME);
-
-static void
-DisplayBanner(char * AppName)
-{
-	UART_PRINT("\n\n\n\r");
-	UART_PRINT("\t\t *************************************************\n\r");
-	UART_PRINT("\t\t      CC3200 %s Application       \n\r", AppName);
-	UART_PRINT("\t\t *************************************************\n\r");
-	UART_PRINT("\n\n\n\r");
-	// Print Debugging information.
-	UART_PRINT("\33[H\33[2J");
-	UART_PRINT("Software compiled: ");
-	UART_PRINT(__TIME__);
-	UART_PRINT(" ");
-	UART_PRINT(__DATE__);
-	UART_PRINT("\n\r");
-	UART_PRINT("\n\rREADY...\n\r");
-}
-*/

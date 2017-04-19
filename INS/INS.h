@@ -11,7 +11,7 @@
 #define DEBUG_MODE 0
 
 void mat_dot_vec(double [][], double [], double []);
-void INS_init(system_state_str* , double [], double [][], double [] , double []);
+void INS_init(system_state_str* , double [], double [][], double [][], double [] , double []);
 void INS_calc(system_state_str* , double [] , double []);
 
 #ifndef M_PI

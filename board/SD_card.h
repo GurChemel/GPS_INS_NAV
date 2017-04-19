@@ -8,6 +8,19 @@
 #ifndef SD_CARD_H_
 #define SD_CARD_H_
 
+#ifndef FA_READ
+#define	FA_READ				0x01
+#endif
+#ifndef FA_WRITE
+#define	FA_WRITE			0x02
+#endif
+#ifndef FA_OPEN_ALWAYS
+#define	FA_OPEN_ALWAYS		0x10
+#endif
+#ifndef FA_CREATE_ALWAYS
+#define	FA_CREATE_ALWAYS	0x08
+#endif
+
 #define SD_OPEN_IF_EXISTS 		FA_READ|FA_WRITE|FA_OPEN_EXISTING 	//Opens if exists, fails otherwise
 #define SD_CREATE_OR_OPEN		FA_READ|FA_WRITE|FA_OPEN_ALWAYS		//Open if exists, creates new otherwise
 #define SD_CREATE_AND_DELETE	FA_READ|FA_WRITE|FA_CREATE_ALWAYS	//Creates new, deletes if exists

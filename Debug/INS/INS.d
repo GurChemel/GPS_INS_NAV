@@ -50,6 +50,7 @@ INS/INS.obj: ../INS/../sensors/HMC5883.h
 INS/INS.obj: ../INS/../main.h
 INS/INS.obj: ../INS/INS.h
 INS/INS.obj: ../INS/../includes/infrastructure.h
+INS/INS.obj: ../INS/matrix_manipulation.h
 
 ../INS/INS.c: 
 ../INS/../includes/std_inc.h: 
@@ -101,3 +102,4 @@ C:/TI/CC3200SDK_1.2.0/cc3200-sdk/driverlib/timer.h:
 ../INS/../main.h: 
 ../INS/INS.h: 
 ../INS/../includes/infrastructure.h: 
+../INS/matrix_manipulation.h: 

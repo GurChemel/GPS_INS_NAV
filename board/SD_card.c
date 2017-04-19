@@ -11,6 +11,9 @@
 #include "../includes/driverlib.h"
 #include "ff.h"
 #include "SD_card.h"
+#include "../Sensors/sensors.h"
+#include "../includes/infrastructure.h"
+
 
 void SD_on(void)
 {
@@ -55,22 +58,27 @@ int SD_write_file(char* file, char* text, int len, char options)
 	FRESULT res;
 	DIR dir;
 	UINT Size;
-
 	SD_on();
 
 	res = f_mount(&fs,"0",1);
+	if(res!=FR_OK) DEBUG_PRINT("\t\t f_mount: %d \n\r", res);
 	if(res!=FR_OK)	return res;
 
 	res = f_opendir(&dir,"/");
+	if(res!=FR_OK) DEBUG_PRINT("\t\t f_opendir: %d \n\r", res);
 	if(res!=FR_OK)	return res;
 
 	res = f_open(&fp,file, options);  //FA_CREATE_ALWAYS|FA_READ|FA_WRITE
+	if(res!=FR_OK) DEBUG_PRINT("\t\t f_open: %d \n\r", res);
 	if(res!=FR_OK)	return res;
 
+    res = f_lseek(&fp, f_size(&fp));
 	res = f_write(&fp,text,len,&Size);
+	if(res!=FR_OK) DEBUG_PRINT("\t\t f_write: %d \n\r", res);
 	if(res!=FR_OK)	return res;
 
 	res = f_close(&fp);
+	if(res!=FR_OK) DEBUG_PRINT("\t\t f_close: %d \n\r", res);
 	if(res!=FR_OK)	return res;
 
 	SD_off();
