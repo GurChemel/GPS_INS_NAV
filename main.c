@@ -36,9 +36,14 @@ int main(void)
 	double enu_to_ecef_mat[DIM_SIZE][DIM_SIZE];
 	double ecef_to_enu_mat[DIM_SIZE][DIM_SIZE];
 	double ins_position_in_ECEF[DIM_SIZE]= {0};
-	DEBUG_PRINT("\n\rStarting system Initialization....\n\r");
+	char info_string[MAX_STRING_LENGTH];
+	sprintf(info_string,"%d: Starting system Initialization....\n\r",rand());
+	DEBUG_PRINT(info_string);
+	SD_write_file("log.txt",info_string, strlen(info_string), SD_CREATE_OR_OPEN);
 	INS_init(&systemState, local_ref_in_ECEF, enu_to_ecef_mat,ecef_to_enu_mat,gyro_offset,enu_offset);
-	light_all_init_led();
+	light_all_init_led(2);
+	sprintf(info_string,"Finished system Initialization.\n\r");
+	SD_write_file("log.txt",info_string, strlen(info_string), SD_CREATE_OR_OPEN);
 	if (1){
 		DEBUG_PRINT("\n\rSystem Initialized:\n\r");
 		DEBUG_PRINT("\t Local Reference (x,y,z) in ECEF: (%f, %f, %f).\n\r",(local_ref_in_ECEF[X_pos]),(local_ref_in_ECEF[Y_pos]),(local_ref_in_ECEF[Z_pos]));
@@ -61,17 +66,23 @@ int main(void)
 	old_gps_data.Z=local_ref_in_ECEF[Z_pos];
 
 	// Set general Parameters.
+	double gps_trust_value=1; // Must be set between 0 to 1.
 	int row;
 	int loop_counter=1;
 	double output_position_in_ECEF[DIM_SIZE];
-	char position_data_format[] = "%lf %lf %lf\n";	//Position in ECEF (x,y,z)
+	char position_data_format[] = "%lf %lf %lf %lf\n";	//Position in ECEF (x,y,z,time (uSec))
 	char position_data_str[MAX_STRING_LENGTH];
+	double dt,time;
+	cycles_timer(&dt);
+	time=0;
 
 	// Gur: Added for offset testing:
 	//gyr_input_data_str gyr_data_for_offset;			//	gyr_data.Wr , gyr_data.Wp , gyr_data.Wy , gyr.data.time
 	//double gyro_mean[3]={0};
 	//int i=0;
-	sprintf(position_data_str,"X_ECEF_POSITION Y_ECEF_POSITION Z_ECEF_POSITION\n");
+	sprintf(position_data_str,"GPS_X GPS_Y GPS_Z\n");
+	SD_write_file("gps.txt",position_data_str, strlen(position_data_str), SD_CREATE_AND_DELETE);
+	sprintf(position_data_str,"X_ECEF_POSITION Y_ECEF_POSITION Z_ECEF_POSITION TIME\n");
 	SD_write_file("position.txt",position_data_str, strlen(position_data_str), SD_CREATE_AND_DELETE);
 	while(1){
 		// Check for new GPS data.
@@ -82,26 +93,41 @@ int main(void)
 			//DEBUG_PRINT("\n\r\t New GPS data.\n\n\r");
 			//DEBUG_PRINT("New Diff: (%f,%f,%f)\n\r",position_diff_new[0],position_diff_new[1],position_diff_new[2]);
 			//kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
-			systemState.Vx=ecef_to_enu_mat[0][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[0][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[0][2]*(gps_data.Z-old_gps_data.Z);
-			systemState.Vy=ecef_to_enu_mat[1][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[1][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[1][2]*(gps_data.Z-old_gps_data.Z);
-			systemState.Vz=ecef_to_enu_mat[2][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[2][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[2][2]*(gps_data.Z-old_gps_data.Z);
-			systemState.Px=ecef_to_enu_mat[0][0]*(gps_data.X)+ecef_to_enu_mat[0][1]*(gps_data.Y)+ecef_to_enu_mat[0][2]*(gps_data.Z);
-			systemState.Py=ecef_to_enu_mat[1][0]*(gps_data.X)+ecef_to_enu_mat[1][1]*(gps_data.Y)+ecef_to_enu_mat[1][2]*(gps_data.Z);
-			systemState.Pz=ecef_to_enu_mat[2][0]*(gps_data.X)+ecef_to_enu_mat[2][1]*(gps_data.Y)+ecef_to_enu_mat[2][2]*(gps_data.Z);
+			local_ref_in_ECEF[X_pos]=gps_data.X;
+			local_ref_in_ECEF[Y_pos]=gps_data.Y;
+			local_ref_in_ECEF[Z_pos]=gps_data.Z;
+			systemState.Vx=1*(ecef_to_enu_mat[0][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[0][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[0][2]*(gps_data.Z-old_gps_data.Z))+(1-1)*systemState.Vx;
+			systemState.Vy=1*(ecef_to_enu_mat[1][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[1][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[1][2]*(gps_data.Z-old_gps_data.Z))+(1-1)*systemState.Vy;
+			systemState.Vz=1*(ecef_to_enu_mat[2][0]*(gps_data.X-old_gps_data.X)+ecef_to_enu_mat[2][1]*(gps_data.Y-old_gps_data.Y)+ecef_to_enu_mat[2][2]*(gps_data.Z-old_gps_data.Z))+(1-1)*systemState.Vz;
+			systemState.Px=0; //gps_trust_value*(ecef_to_enu_mat[0][0]*(gps_data.X)+ecef_to_enu_mat[0][1]*(gps_data.Y)+ecef_to_enu_mat[0][2]*(gps_data.Z))+(1-gps_trust_value)*systemState.Px;
+			systemState.Py=0; //gps_trust_value*(ecef_to_enu_mat[1][0]*(gps_data.X)+ecef_to_enu_mat[1][1]*(gps_data.Y)+ecef_to_enu_mat[1][2]*(gps_data.Z))+(1-gps_trust_value)*systemState.Py;
+			systemState.Pz=0; //gps_trust_value*(ecef_to_enu_mat[2][0]*(gps_data.X)+ecef_to_enu_mat[2][1]*(gps_data.Y)+ecef_to_enu_mat[2][2]*(gps_data.Z))+(1-gps_trust_value)*systemState.Pz;
 			old_gps_data.X=gps_data.X;
 			old_gps_data.Y=gps_data.Y;
 			old_gps_data.Z=gps_data.Z;
+			cycles_timer(&dt);
+			time=time+(dt);
+			sprintf(position_data_str,position_data_format,gps_data.X,gps_data.Y,gps_data.Z,time);
+			SD_write_file("gps.txt",position_data_str, strlen(position_data_str), SD_CREATE_OR_OPEN);
 		} else {
 			// Calculate INS position.
 			INS_calc(&systemState,gyro_offset,enu_offset);
+			position_diff_new[X_pos]=old_gps_data.X-ins_position_in_ECEF[X_pos];
+			position_diff_new[Y_pos]=old_gps_data.Y-ins_position_in_ECEF[Y_pos];
+			position_diff_new[Z_pos]=old_gps_data.Z-ins_position_in_ECEF[Z_pos];
+			kalman_filter(position_diff_new,position_diff_old,covariance_matrix,noise_variance_matrix);
 		}
+
+
 		// Convert ENU to ECEF:
 		for (row=0;row<DIM_SIZE;row++){
 			ins_position_in_ECEF[row]=local_ref_in_ECEF[row]+enu_to_ecef_mat[row][0]*systemState.Px+enu_to_ecef_mat[row][1]*systemState.Py+enu_to_ecef_mat[row][2]*systemState.Pz;
-			output_position_in_ECEF[row]=ins_position_in_ECEF[row];//+position_diff_old[row];
+			output_position_in_ECEF[row]=ins_position_in_ECEF[row]+position_diff_old[row];
 		}
 		//Send Position to SD Card:
-		sprintf(position_data_str,position_data_format,output_position_in_ECEF[X_pos],output_position_in_ECEF[Y_pos],output_position_in_ECEF[Z_pos]);
+		cycles_timer(&dt);
+		time=time+(dt);
+		sprintf(position_data_str,position_data_format,output_position_in_ECEF[X_pos],output_position_in_ECEF[Y_pos],output_position_in_ECEF[Z_pos],time);
 		SD_write_file("position.txt",position_data_str, strlen(position_data_str), SD_CREATE_OR_OPEN);
 
 		// Debug Printing to terminal.

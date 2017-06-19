@@ -195,7 +195,7 @@ enum {
 #define GOOD_OP 1
 #define BAD_OP 0
 
-#define STATIC_GPS 1
+#define STATIC_GPS 0
 #define HARD_CODED 1
 #define NMEA 1
 #define EMPTY_BYTE 0

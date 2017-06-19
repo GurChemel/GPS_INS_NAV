@@ -58,7 +58,7 @@ void get_mag_data(mag_input_data_str* mag_input);
 void get_gyr_data(gyr_input_data_str* gyr_input);
 void get_acc_data(acc_input_data_str* acc_input);
 int get_gps_data(gps_input_data_str* gps_input);
-void light_all_init_led();
+void light_all_init_led(int);
 #ifndef MAIN_H_
 void copy_and_convert_mag_data_2_algorithm(mag_input_data_str* mag_query, Mag_local_data_str mag_data);
 void copy_and_convert_gyr_data_2_algorithm(gyr_input_data_str* gyr_query, Gyr_local_data_str gyr_data);
@@ -67,6 +67,7 @@ void copy_and_convert_gps_data_2_algorithm(gps_input_data_str* sw_data, gps_loca
 void copy_and_convert_gps_data_2_algorithm_NMEA(gps_input_data_str* sw_data, gps_local_data_NMEA_str hw_data);
 #endif
 
+void cycles_timer(double*);
 void update_acc_timer(acc_input_data_str* acc_query);
 void update_gyr_timer(gyr_input_data_str* gyr_query);
 void init_board_and_sensors();

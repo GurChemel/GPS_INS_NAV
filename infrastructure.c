@@ -35,7 +35,10 @@ void init_board_and_sensors(){
 	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_6, 0xff);
 	BoardInit();
 	PinMuxConfig();
+	light_all_init_led(0);
+	light_all_init_led(1);
 	int status = 0;
+	char information_string[1000];
 	//console printing
 	InitTerm();
 	ClearTerm();
@@ -50,25 +53,42 @@ void init_board_and_sensors(){
 	DEBUG_PRINT("\n\r\t\t done i2c. entering sd init \n\r");
 	init_SD_card();
 	DEBUG_PRINT("\n\r\t\t done sd init. entering sd write \n\r");
-	status = SD_write_file("hello.txt", "my name is Gur", strlen("my name is Gur"), SD_CREATE_AND_DELETE);
+	sprintf(information_string,"My name is Gur. Comiplation time: %s, Date: %s",__TIME__,__DATE__);
+	status = SD_write_file("hello.txt", information_string, strlen(information_string), SD_CREATE_AND_DELETE);
 	DEBUG_PRINT("\n\r\t\t done sd writing. status: %d \n\r", status);
+	sprintf(information_string,"%d: SD card initialized\n\r",rand());
+	SD_write_file("log.txt",information_string, strlen(information_string), SD_CREATE_AND_DELETE);
 	init_ds2401();
 	DEBUG_PRINT("\n\r\t\t done all init \n\r");
+	sprintf(information_string,"ds2401 initialized\n\r");
+	SD_write_file("log.txt",information_string, strlen(information_string), SD_CREATE_OR_OPEN);
 
 	//sensors
 	DEBUG_PRINT("\n\r\t\t entering gps init  \n\r");
 	status = init_gps();
 	if (status<0) {UART_PRINT("failed to initialize gps reason: %d\n\r", status); while (1){}}
 	else DEBUG_PRINT("\n\r\t\t done init gps entering init mag \n\r");
+	sprintf(information_string,"gps initialized\n\r");
+	SD_write_file("log.txt",information_string, strlen(information_string), SD_CREATE_OR_OPEN);
+
 	status=init_HMC5883(MAG_ADDR, true);
 	if(status<0){UART_PRINT("!!! mag I2c Error. Status: %d\n\r",status); while(1){}}
 	else DEBUG_PRINT("\n\r\t\t done init mag entering init acc \n\r");
+	sprintf(information_string,"mag initialized\n\r");
+	SD_write_file("log.txt",information_string, strlen(information_string), SD_CREATE_OR_OPEN);
+
 	status=init_ADXL345(ACC_ADDR);
 	if(status<0){UART_PRINT("!!! acc I2c Error. Status: %d\n\r",status); while(1){}}
 	else {DEBUG_PRINT("\n\r\t\t done init acc entering init gyr \n\r");}
+	sprintf(information_string,"acc initialized\n\r");
+	SD_write_file("log.txt",information_string, strlen(information_string), SD_CREATE_OR_OPEN);
+
 	status=init_ITG3200(GYR_ADDR);
 	if(status<0){UART_PRINT("!!! gyr I2c Error. Status: %d\n\r",status); while(1){}}
 	else {DEBUG_PRINT("\n\r\t\t done init gyr done all sensors init \n\r");}
+	sprintf(information_string,"gyr initialized\n\r");
+	SD_write_file("log.txt",information_string, strlen(information_string), SD_CREATE_OR_OPEN);
+
 	//init_MPL115A2();
 }
 
@@ -186,6 +206,13 @@ void copy_and_convert_gps_data_2_algorithm_NMEA(gps_input_data_str* sw_data, gps
 //timer functions
 /******************************************************/
 
+void cycles_timer (double* dt){
+	Timer_IF_Stop(TIMERA1_BASE,TIMER_B); //not sure if needed
+	*dt = Timer_IF_GetCount(TIMERA1_BASE,TIMER_B); //MAX_COUNT_USEC-CLOCK_PERIOD_USEC*(Timer_IF_GetCount(TIMERA1_BASE,TIMER_B)); //in uSec
+	Timer_IF_Init(PRCM_TIMERA1,TIMERA1_BASE,TIMER_CFG_PERIODIC_UP,TIMER_B,1);
+	Timer_IF_Start(TIMERA1_BASE,TIMER_B,100);
+}
+
 
 void update_acc_timer (acc_input_data_str* acc_query){
 	Timer_IF_Stop(TIMERA1_BASE,TIMER_A); //not sure if needed
@@ -201,7 +228,13 @@ void update_gyr_timer (gyr_input_data_str* gyr_query){
 	Timer_IF_Start(TIMERA2_BASE,TIMER_A,100);
 }
 
-void light_all_init_led(){
-	GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_7, 0xff);
-	//GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_08, 0xff);
+void light_all_init_led(int led_num){
+	if (led_num == 1){
+		GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_7, 0xff);
+	} else if  (led_num == 2){
+		GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_6, 0xff);
+	}else {
+		GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_7, 0x00);
+		GPIOPinWrite(GPIOA0_BASE, GPIO_PIN_6, 0x00);
+	}
 }
